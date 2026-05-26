@@ -40,6 +40,7 @@ type MeetingData = {
   videoTitle: string;
   videoSelector: string;
   videoReason: string;
+  videoSummary: string;
   scripts: ScriptTexts;
   presentations: SectionData[];
 };
@@ -55,6 +56,7 @@ const DEFAULT_DATA: MeetingData = {
   videoTitle: "고성과 조직에는 반드시 '이것'이 확보되어 있습니다.",
   videoSelector: "경영기획팀",
   videoReason: "고성과 조직의 핵심 요소를 함께 고민하고 우리 조직에 적용하고자 선정하였습니다",
+  videoSummary: "강연자: 황성현 ㈜권팀인사이트(경영컨설팅 전문회사) 대표\n- 고성과 조직은 \"실패하더라도 불이익을 받지 않는다\"는 \"심리적 안정감\"을 구축하고 있음\n- 미래 사회와 인공지능 시대의 조직은 정답을 맞추는 것보다 다양한 해답을 찾는 힘이 필요하며, 실패를 담당히 공유하는 시스템을 구축해야함\n- 과거의 성공방식에 매몰되지 않고, 새로운 세대가 도전을 하도록 리더와 경영진이 심리적 공간을 마련해주는 것이 핵심임",
   scripts: {
     opening: "월 업무혁신회의를 시작하겠습니다.",
     videoIntro: "다음으로 동영상 시청이 있겠습니다. 금일 동영상은",
@@ -67,7 +69,8 @@ const DEFAULT_DATA: MeetingData = {
   presentations: [
     {
       from: "9:25", to: "9:50", dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",
-      topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "",
+      topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고",
+      summary: "유통물류 가맹점 점주의 스마트폰 접속 편의성 향상을 위해 앱과 유사한 방식의 간편 접속 기능에 대한 지속적인 요구사항을 반영하여 시스템 개발\n- 앱 개발 없이 앱 수준의 편의성 제공 (유지보수 비용발생 無)\n- 안드로이드·맥·윈도우 하나의 코드로 각각의 코드 동시 지원",
       discussion: [
         { agenda: "근무 체계 변경 및 고령 근로자 노무 관리", relatedDept: "인사팀, 노무팀, 안전보건팀", keyContent: "영업시간 연장에 따른 교대 근무조 편성, 고령 근로자 근무시간 확대, 본사 및 타부서 백업 프로세스 구축", discussionPoints: "고령 근로자 건강 및 안전 문제, 1인 근무 보안 대책, 근로계약서 재작성 절차", risks: "고령 근로자 안전사고 위험, 건강 문제, 보안 취약점" },
         { agenda: "최고가격제 대응 및 수배송 단가 인상안", relatedDept: "기획팀, 재무팀, 물류운영팀", keyContent: "최고가격제 시행에 따른 주유소 이익률 개선 방안, 단가 인상(게시가 +50원→+120원) 및 물류비 전가 가능성 분석", discussionPoints: "협력 운송사의 단가 반발 및 이탈 위험, 회사 전체 손익 분석, 주유소 손익과 통합 손익 간 균형", risks: "협력사 이탈 가능성, 비용 증가, 전사 손익 악화 위험" },
@@ -76,10 +79,11 @@ const DEFAULT_DATA: MeetingData = {
         { agenda: "수요 예측 기반 재고 및 매입 단가 관리", relatedDept: "물류기획팀, 구매팀", keyContent: "할인 월별 주유량 분석, 가동률·계절별 물동량 데이터 공유, 최적 매입 시점 조정", discussionPoints: "재고 부족 및 과잉 예방, 본사 예측 데이터와 매입 연계 강화", risks: "재고 관리 실패로 인한 비용 증가 및 공급 차질 위험" },
       ],
     },
-    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "", discussion: [] },
+    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "상품 판매 전략을 기존 고객사 중심의 판매를 넘어 인터넷 기반의 불특정 다수 고객 대상으로 확대함으로써 판매채널 다변화를 추진\n가. 사전 검토 사항 (구축사항)\n나. 향후 운영 전략 (상품군, 플랫폼 등)", discussion: [] },
     {
       from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀",
-      topic: "스마일 주유소 김해점 매출확대 및 손익개선방안", summary: "",
+      topic: "스마일 주유소 김해점 매출확대 및 손익개선방안",
+      summary: "스마일 주유소 김해점 매출확대 및 손익개선을 위한 판매전략 개선\n가. 주유소 운영시간 변경검토\n  - 기존: 05:30~22:30(평일), 06:00~21:00(주말)\n  - 변경: 05:30~24:00(평일), 06:00~21:00(주말)\n  ※ 공동물류차량 주유확대 및 협력운송사 주유 확대 전략 구축\n나. 손익 개선 전략\n  - 셀프 주유소 전환 검토(추후 재계약 시, 계약 반영)",
       discussion: [
         { agenda: "근무 체계 변경 및 고령 근로자 노무 관리", relatedDept: "인사팀, 노무팀, 안전보건팀", keyContent: "영업시간 연장에 따른 근무조 편성, 고령 근로자 근무 확대, 백업 프로세스 구축", discussionPoints: "고령 근로자 건강 안전, 1인 근무 보안 대책, 근로계약서 재작성", risks: "인전사고 위험, 건강 리스크, 보안 사고 가능성" },
         { agenda: "최고가격제 대응 및 수배송 단가 인상안", relatedDept: "기획팀, 재무팀, 물류운영팀", keyContent: "최고가격제 시행 후 이익률 개선 방안, 수배송 단가 인상 기준 조정", discussionPoints: "단가 인상에 따른 협력사 반발, 회사 전체 손익 영향 분석", risks: "협력사 이탈 가능성, 전사 손익 균형 문제" },
@@ -700,7 +704,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; hasDetail?: boolean; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; hasDetail?: boolean; onSummaryChange?: (v: string) => void; script: React.ReactNode; notes: string; bg?: string };
 
   const lastTo = presentations.length > 0 ? presentations[presentations.length - 1].to : "";
 
@@ -725,6 +729,8 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
   const rows: RowItem[] = [
     {
       from: "9:00", to: "9:18", label: "동영상 시청", dept: "", presenter: videoSelector, bg: "bg-slate-50",
+      summary: data.videoSummary,
+      onSummaryChange: (v) => onDataChange({ ...data, videoSummary: v }),
       script: (
         <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 {scripts.opening}{" "}
@@ -953,11 +959,15 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
                       </td>
                       {/* 회의내용 요약 */}
                       <td className="border border-gray-300 px-4 py-3 text-[12px] text-gray-700 align-top leading-relaxed">
-                        {row.presIdx !== undefined ? (
+                        {(row.presIdx !== undefined || row.onSummaryChange) ? (
                           <span
                             contentEditable
                             suppressContentEditableWarning
-                            onBlur={(e) => setPresSummary(row.presIdx!)(e.currentTarget.textContent ?? "")}
+                            onBlur={(e) => {
+                              const val = e.currentTarget.textContent ?? "";
+                              if (row.presIdx !== undefined) setPresSummary(row.presIdx)(val);
+                              else row.onSummaryChange?.(val);
+                            }}
                             className="block w-full min-h-[40px] whitespace-pre-wrap focus:outline-none focus:ring-1 focus:ring-indigo-300 rounded px-1"
                             title="클릭하여 요약 입력"
                           >
@@ -1175,7 +1185,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v3");
+      const saved = localStorage.getItem("meeting_data_v4");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1186,7 +1196,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v3", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v4", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
