@@ -622,18 +622,28 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
   return (
     <div className="flex-1 overflow-y-auto bg-slate-100">
       {/* 헤더 */}
-      <header className="bg-gradient-to-r from-indigo-900 to-indigo-700 text-white shadow-lg no-print">
-        <div className="px-6 py-3.5 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h1 className="text-base font-bold tracking-tight">📋 업무혁신회의 — 진행자 멘트 시트</h1>
-            <p className="text-indigo-200 text-[11px] mt-0.5">
-              <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[11px] font-bold mr-1">노란색 항목</span>
-              을 클릭하면 바로 수정할 수 있습니다
-            </p>
+      <header className="no-print text-white shadow-md"
+        style={{ background: "linear-gradient(90deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%)", borderBottom: "1px solid rgba(139,92,246,0.25)" }}>
+        <div className="px-6 py-3 flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)", boxShadow: "0 0 12px rgba(124,58,237,0.4)" }}>
+              <span className="text-sm">📋</span>
+            </div>
+            <div>
+              <h1 className="text-[13px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트 시트</h1>
+              <p className="text-[11px] mt-0.5" style={{ color: "rgba(167,139,250,0.7)" }}>
+                <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1">노란색 항목</span>
+                클릭하여 수정 가능
+              </p>
+            </div>
           </div>
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center gap-1.5 bg-white text-indigo-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-indigo-50 transition shadow"
+            className="no-print flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[11px] font-semibold transition shadow-sm"
+            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#e2e8f0" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
           >
             🖨️ 인쇄 / PDF 저장
           </button>
@@ -752,21 +762,27 @@ export default function App() {
     <div className="flex h-screen overflow-hidden bg-slate-100 font-sans">
       {/* ── 사이드바 ── */}
       <aside
-        className={`no-print flex-shrink-0 bg-indigo-950 text-white flex flex-col transition-all duration-300 ${
+        className={`no-print flex-shrink-0 flex flex-col transition-all duration-300 border-r border-slate-700/60 ${
           sidebarOpen ? "w-56" : "w-14"
         }`}
+        style={{ background: "linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%)" }}
       >
         {/* 로고 */}
-        <div className={`flex items-center gap-2 px-4 py-4 border-b border-indigo-800 ${!sidebarOpen && "justify-center"}`}>
+        <div className={`flex items-center gap-2 px-4 py-4 ${!sidebarOpen && "justify-center"}`}
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
           {sidebarOpen && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white leading-tight truncate">업무혁신회의</p>
-              <p className="text-indigo-400 text-[10px] truncate">{data.meetingDate}</p>
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shadow" style={{ boxShadow: "0 0 6px #a78bfa" }} />
+                <p className="text-[11px] font-bold text-white tracking-wide truncate">업무혁신회의</p>
+              </div>
+              <p className="text-[10px] truncate" style={{ color: "rgba(167,139,250,0.6)" }}>{data.meetingDate}</p>
             </div>
           )}
           <button
             onClick={() => setSidebarOpen((p) => !p)}
-            className="text-indigo-400 hover:text-white transition p-1 rounded"
+            className="transition p-1 rounded-lg text-[10px]"
+            style={{ color: "rgba(148,163,184,0.6)" }}
             title={sidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
           >
             {sidebarOpen ? "◀" : "▶"}
@@ -774,26 +790,47 @@ export default function App() {
         </div>
 
         {/* 메뉴 */}
-        <nav className="flex-1 py-3 space-y-1 px-2">
+        <nav className="flex-1 py-4 space-y-1 px-2">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setPage(item.id)}
               title={!sidebarOpen ? item.label : undefined}
-              className={`w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-left transition-all ${
-                page === item.id
-                  ? "bg-indigo-600 text-white shadow"
-                  : "text-indigo-300 hover:bg-indigo-800 hover:text-white"
-              } ${!sidebarOpen && "justify-center"}`}
+              className={`w-full flex items-center gap-3 px-2.5 py-2.5 rounded-xl text-left transition-all duration-200 ${
+                !sidebarOpen && "justify-center"
+              }`}
+              style={page === item.id ? {
+                background: "linear-gradient(135deg, rgba(139,92,246,0.25) 0%, rgba(99,102,241,0.2) 100%)",
+                border: "1px solid rgba(139,92,246,0.3)",
+                color: "#e2e8f0",
+              } : {
+                border: "1px solid transparent",
+                color: "rgba(148,163,184,0.7)",
+              }}
+              onMouseEnter={(e) => {
+                if (page !== item.id) {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                  e.currentTarget.style.color = "#e2e8f0";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (page !== item.id) {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "rgba(148,163,184,0.7)";
+                }
+              }}
             >
-              <span className="text-base flex-shrink-0">{item.icon}</span>
+              <span className="text-sm flex-shrink-0">{item.icon}</span>
               {sidebarOpen && (
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold leading-tight">{item.label}</p>
-                  <p className={`text-[10px] leading-tight ${page === item.id ? "text-indigo-200" : "text-indigo-500"}`}>
+                  <p className="text-[12px] font-semibold leading-tight">{item.label}</p>
+                  <p className="text-[10px] leading-tight mt-0.5" style={{ color: page === item.id ? "rgba(167,139,250,0.7)" : "rgba(100,116,139,0.8)" }}>
                     {item.sub}
                   </p>
                 </div>
+              )}
+              {page === item.id && sidebarOpen && (
+                <span className="ml-auto w-1 h-1 rounded-full bg-violet-400 flex-shrink-0" />
               )}
             </button>
           ))}
@@ -801,9 +838,9 @@ export default function App() {
 
         {/* 하단 배지 */}
         {sidebarOpen && (
-          <div className="px-4 py-3 border-t border-indigo-800">
-            <p className="text-[10px] text-indigo-500 leading-relaxed">
-              {data.month}월 회의 · 종료 {data.endTime}시
+          <div className="px-4 py-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            <p className="text-[10px] leading-relaxed" style={{ color: "rgba(100,116,139,0.8)" }}>
+              {data.month}월 회의 &middot; 종료 {data.endTime}시
             </p>
           </div>
         )}
