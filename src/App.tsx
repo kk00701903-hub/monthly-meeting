@@ -65,7 +65,17 @@ const DEFAULT_DATA: MeetingData = {
     ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
   },
   presentations: [
-    { from: "9:25", to: "9:50",  dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",  topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "", discussion: [] },
+    {
+      from: "9:25", to: "9:50", dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",
+      topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "",
+      discussion: [
+        { agenda: "근무 체계 변경 및 고령 근로자 노무 관리", relatedDept: "인사팀, 노무팀, 안전보건팀", keyContent: "영업시간 연장에 따른 교대 근무조 편성, 고령 근로자 근무시간 확대, 본사 및 타부서 백업 프로세스 구축", discussionPoints: "고령 근로자 건강 및 안전 문제, 1인 근무 보안 대책, 근로계약서 재작성 절차", risks: "고령 근로자 안전사고 위험, 건강 문제, 보안 취약점" },
+        { agenda: "최고가격제 대응 및 수배송 단가 인상안", relatedDept: "기획팀, 재무팀, 물류운영팀", keyContent: "최고가격제 시행에 따른 주유소 이익률 개선 방안, 단가 인상(게시가 +50원→+120원) 및 물류비 전가 가능성 분석", discussionPoints: "협력 운송사의 단가 반발 및 이탈 위험, 회사 전체 손익 분석, 주유소 손익과 통합 손익 간 균형", risks: "협력사 이탈 가능성, 비용 증가, 전사 손익 악화 위험" },
+        { agenda: "셀프 주유소 전환 타이밍 및 실효성 검토", relatedDept: "경영전략팀, 재무팀, 시설관리팀", keyContent: "초기 투자비 1.2억 원 대비 투자회수 기간 3.6년 검토, 임대 계약 중도 변경 협의, 인원 감축과 매출 영향 분석", discussionPoints: "매출 감소 대비 인건비 절감 효과, 대형 차량 셀프 주유 제한 문제 해결", risks: "투자 회수 불확실성, 매출 감소 위험, 고객 불만 가능성" },
+        { agenda: "관계사 물량 Lock-in 및 사내 공동 판촉 활성화", relatedDept: "총무팀, 홍보팀, B2B영업팀", keyContent: "관계사 및 차량 주유 유치 활성화, 사내 프로모션 및 캠페인 추진, 물량 급감 원인 분석", discussionPoints: "임직원 이용 증대 방안, 캠페인 효과 측정, 홍보 및 정산 시스템 편의성", risks: "물량 감소에 따른 매출 하락 우려, 지속적인 관계 관리 필요" },
+        { agenda: "수요 예측 기반 재고 및 매입 단가 관리", relatedDept: "물류기획팀, 구매팀", keyContent: "할인 월별 주유량 분석, 가동률·계절별 물동량 데이터 공유, 최적 매입 시점 조정", discussionPoints: "재고 부족 및 과잉 예방, 본사 예측 데이터와 매입 연계 강화", risks: "재고 관리 실패로 인한 비용 증가 및 공급 차질 위험" },
+      ],
+    },
     { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "", discussion: [] },
     {
       from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀",
@@ -1165,7 +1175,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v2");
+      const saved = localStorage.getItem("meeting_data_v3");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1176,7 +1186,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v2", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v3", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
