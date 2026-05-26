@@ -878,7 +878,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
           ○ 대표님 맺음말{" "}
           <span className="text-gray-400 italic ml-1">[발언 후]</span>
           {" "}→ 이상으로 <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 마치겠습니다.{" "}
-          <span className="text-gray-400 italic">상호간의 인사</span>
+          <span className="text-gray-400 italic">상호간에 인사</span>
         </p>
       ),
       notes: "",
@@ -1316,7 +1316,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v8");
+      const saved = localStorage.getItem("meeting_data_v9");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1327,7 +1327,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v8", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v9", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
