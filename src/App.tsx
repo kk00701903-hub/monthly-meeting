@@ -17,6 +17,7 @@ type MeetingData = {
   endTime: string;
   videoTitle: string;
   videoSelector: string;
+  videoReason: string;
   yeongUp: SectionData;
   gyeongIn1: SectionData;
   gyeongIn2: SectionData;
@@ -35,6 +36,7 @@ const DEFAULT_DATA: MeetingData = {
   endTime: "11",
   videoTitle: "물류산업종사자만 78만명, 로봇은 정말 인간의 일자리를 뺏어갈까?",
   videoSelector: "인사총무팀",
+  videoReason: "AI 및 자동화 기술이 물류 현장에 미치는 영향을 함께 고민하고자 선정하였습니다",
   yeongUp: { from: "9:15", to: "9:30", presenter: "최배성본부장", team: "영업지원팀", topic: "3PL 표준요율 단가정립을 통한 견적업무 합리화" },
   gyeongIn1: { from: "9:30", to: "9:45", presenter: "마영기상무", team: "유통사업3팀", topic: "입고 명세서 통일화 테스트 상황 및 향후 과제" },
   gyeongIn2: { from: "9:45", to: "10:00", presenter: "안영준본부장", team: "경인사업2팀", topic: "AI 활용사례 : 전표처리 자동화" },
@@ -406,6 +408,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
             <Field label="종료 예정 시간" value={local.endTime} onChange={(v) => set("endTime", v)} />
             <Field label="동영상 선정 팀" value={local.videoSelector} onChange={(v) => set("videoSelector", v)} />
             <Field label="동영상 제목" value={local.videoTitle} onChange={(v) => set("videoTitle", v)} wide />
+            <Field label="동영상 선정 사유" value={local.videoReason} onChange={(v) => set("videoReason", v)} wide />
           </div>
         </section>
 
@@ -480,7 +483,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
    멘트 시트 화면
 ─────────────────────────────────────────── */
 function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (d: MeetingData) => void }) {
-  const { month, meetingDate, endTime, videoTitle, videoSelector, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
+  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
   const setSection = (key: keyof MeetingData, field: keyof SectionData) => (v: string) =>
@@ -516,8 +519,11 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
           <p className="text-gray-600 text-xs">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
           <p>○ 다음으로 동영상 시청이 있겠습니다. 금일 동영상은 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
-          <p className="text-gray-600 text-xs">: 이번 동영상은{" "}
-            <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상입니다.</p>
+          <p className="text-gray-600 text-xs">
+            : 이번 동영상은{" "}
+            <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
+            <E value={videoReason} onChange={set("videoReason")} w="260px" />
+          </p>
         </div>
       ),
       notes: "○ 결론을 낸다.\n○ 내용이 길고 복잡할 경우, 발표한 내용을 반복해서 요약 정리해준다.\n○ 각 부서별 의견을 묻는다.\n○ 팀별 질문에 대한 대답 요청",
