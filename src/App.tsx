@@ -713,8 +713,6 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
 
   type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; hasDetail?: boolean; onSummaryChange?: (v: string) => void; script: React.ReactNode; notes: string; bg?: string };
 
-  const lastTo = presentations.length > 0 ? presentations[presentations.length - 1].to : "";
-
   const presRows: RowItem[] = presentations.map((p, i) => ({
     from: p.from, to: p.to, label: p.team, dept: p.dept || `발표 ${i + 1}`, presenter: p.presenter,
     topic: p.topic, summary: p.summary, presIdx: i,
@@ -788,7 +786,6 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
   ];
 
   const hdrColor = "#2d3e56";
-  const tdBase = "border border-gray-300 px-3 py-2.5 text-[13px] align-middle leading-relaxed";
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-100">
