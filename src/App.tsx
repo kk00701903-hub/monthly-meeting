@@ -278,7 +278,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: yeongUp.from, to: yeongUp.to, label: "영업본부", presenter: `${yeongUp.presenter} / ${yeongUp.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ <E value={yeongUp.presenter} onChange={setSection("yeongUp", "presenter")} w="90px" /> 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
+          <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={yeongUp.topic} onChange={setSection("yeongUp", "topic")} w="220px" /></p>
         </div>
       ),
@@ -288,7 +288,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: gyeongIn1.from, to: gyeongIn1.to, label: "경인사업1본부", presenter: `${gyeongIn1.presenter} / ${gyeongIn1.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ 이어서 <E value={gyeongIn1.presenter} onChange={setSection("gyeongIn1", "presenter")} w="90px" /> 경인사업1본부 발표해 주시기 바랍니다.</p>
+          <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={gyeongIn1.topic} onChange={setSection("gyeongIn1", "topic")} w="220px" /></p>
         </div>
       ),
@@ -298,7 +298,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: gyeongIn2.from, to: gyeongIn2.to, label: "경인사업2본부", presenter: `${gyeongIn2.presenter} / ${gyeongIn2.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ <E value={gyeongIn2.presenter} onChange={setSection("gyeongIn2", "presenter")} w="90px" /> 경인사업2본부 발표해 주시기 바랍니다.</p>
+          <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={gyeongIn2.topic} onChange={setSection("gyeongIn2", "topic")} w="220px" /></p>
         </div>
       ),
@@ -308,7 +308,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: yeongNam.from, to: yeongNam.to, label: "영남사업본부", presenter: `${yeongNam.presenter} / ${yeongNam.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ <E value={yeongNam.presenter} onChange={setSection("yeongNam", "presenter")} w="90px" /> 영남사업본부 발표해 주시기 바랍니다.</p>
+          <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={yeongNam.topic} onChange={setSection("yeongNam", "topic")} w="220px" /></p>
         </div>
       ),
@@ -318,7 +318,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: jungNam.from, to: jungNam.to, label: "중남사업본부", presenter: `${jungNam.presenter} / ${jungNam.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ <E value={jungNam.presenter} onChange={setSection("jungNam", "presenter")} w="90px" /> 중남사업본부 발표해 주시기 바랍니다.</p>
+          <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={jungNam.topic} onChange={setSection("jungNam", "topic")} w="220px" /></p>
         </div>
       ),
@@ -328,7 +328,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       from: jegwa.from, to: jegwa.to, label: "제과사업부", presenter: `${jegwa.presenter} / ${jegwa.team}`,
       script: (
         <div className="space-y-1">
-          <p>○ <E value={jegwa.presenter} onChange={setSection("jegwa", "presenter")} w="90px" /> 제과사업부 발표해 주시기 바랍니다.</p>
+          <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
           <p className="text-xs text-blue-700 pl-3">→ <E value={jegwa.topic} onChange={setSection("jegwa", "topic")} w="220px" /></p>
         </div>
       ),
