@@ -714,7 +714,10 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
     hasDetail: true,
     script: (
       <div className="space-y-1">
-        <p>○ {p.dept ? `${p.dept} ` : (p.team ? `${p.team} ` : "")}발표해 주시기 바랍니다.</p>
+        <p>○ {p.team === "정보전략팀"
+          ? `${p.team} 발표드리겠습니다.`
+          : `${p.team || p.dept || ""} 발표해 주시기 바랍니다.`}
+        </p>
         {p.topic && (
           <p className="text-[13px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
