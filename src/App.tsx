@@ -68,14 +68,18 @@ function E({ value, onChange, w = "auto" }: { value: string; onChange: (v: strin
 ─────────────────────────────────────────── */
 function Notes({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
-  if (!text) return <span className="text-gray-300 text-[11px]">—</span>;
+  if (!text) return null;
   return (
-    <div>
-      <button onClick={() => setOpen((p) => !p)} className="text-[11px] text-blue-500 hover:text-blue-700 underline no-print">
-        {open ? "▲ 접기" : "▼ 보기"}
+    <div className="mt-2 no-print">
+      <button
+        onClick={() => setOpen((p) => !p)}
+        className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-700 transition-colors"
+      >
+        <span className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}>▶</span>
+        추가 검토사항
       </button>
       {open && (
-        <div className="mt-1 text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap bg-blue-50 p-2 rounded border border-blue-100">
+        <div className="mt-1.5 text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap rounded-lg border-l-2 border-amber-400 bg-amber-50 px-3 py-2">
           {text}
         </div>
       )}
@@ -703,7 +707,6 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                   <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-24 whitespace-nowrap">구분</th>
                   <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-32 whitespace-nowrap">담당 / 발표자</th>
                   <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
-                  <th className="px-3 py-2.5 font-semibold text-center whitespace-nowrap no-print w-28">검토사항</th>
                 </tr>
               </thead>
               <tbody>
@@ -721,8 +724,10 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                       </span>
                     </td>
                     <td className={`${tdBase} text-[11px] text-gray-500 border-r border-gray-200`}>{row.presenter}</td>
-                    <td className={`${tdBase} text-gray-800`}>{row.script}</td>
-                    <td className={`${tdBase} no-print`}><Notes text={row.notes} /></td>
+                    <td className={`${tdBase} text-gray-800`}>
+                      {row.script}
+                      <Notes text={row.notes} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
