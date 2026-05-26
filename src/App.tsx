@@ -1155,17 +1155,17 @@ function DetailPage({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-100">
+    <div className="h-full flex flex-col bg-slate-100 overflow-hidden">
       {/* 저장 토스트 */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 pointer-events-none">
+        <div className="fixed bottom-6 right-6 z-[60] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 pointer-events-none">
           ✓ 저장되었습니다
         </div>
       )}
       {/* 헤더 */}
-      <header className="no-print text-white shadow-md"
+      <header className="flex-shrink-0 text-white shadow-md"
         style={{ background: "linear-gradient(90deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%)", borderBottom: "1px solid rgba(139,92,246,0.25)" }}>
-        <div className="px-6 py-3 flex items-center gap-4">
+        <div className="px-4 py-2.5 flex items-center gap-4">
           <button onClick={() => { handleSave(); onBack(); }}
             className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition whitespace-nowrap">
             ← 진행자 멘트로 돌아가기 (자동 저장)
@@ -1193,17 +1193,17 @@ function DetailPage({
         </div>
       </header>
 
-      <div className="p-6">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <div className="flex-1 overflow-auto p-3">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+          <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
             <div>
               <h2 className="text-sm font-bold text-gray-800">세부 토의 안건</h2>
-              <p className="text-xs text-gray-400 mt-0.5">엑셀 업로드 또는 직접 입력하여 내용을 관리하세요. 저장은 우측 상단 버튼을 누르세요.</p>
+              <p className="text-xs text-gray-400">엑셀 업로드 또는 직접 입력하여 내용을 관리하세요.</p>
             </div>
             <div className="text-xs text-gray-400">{items.length}개 안건</div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-auto flex-1">
             <table className="w-full border-collapse text-[13px]">
               <thead>
                 <tr className="bg-gray-700 text-white">
@@ -1246,7 +1246,7 @@ function DetailPage({
             </table>
           </div>
 
-          <div className="px-6 py-3 border-t border-gray-100 flex items-center gap-3">
+          <div className="px-4 py-2.5 border-t border-gray-100 flex items-center gap-3 flex-shrink-0">
             <button onClick={addRow}
               className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition border border-indigo-200 hover:border-indigo-400 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100">
               + 행 추가
@@ -1255,7 +1255,7 @@ function DetailPage({
               className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-900 transition border border-emerald-200 hover:border-emerald-400 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100">
               ✓ 저장
             </button>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1426,13 +1426,13 @@ export default function App() {
       {/* ── 세부 토의 안건 모달 ── */}
       {detailModal !== null && data.presentations[detailModal] && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: "rgba(0,0,0,0.55)" }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-2"
+          style={{ background: "rgba(0,0,0,0.65)" }}
           onClick={() => setDetailModal(null)}
         >
           <div
-            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col overflow-hidden"
-            style={{ maxHeight: "90vh" }}
+            className="relative bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden"
+            style={{ width: "98vw", height: "96vh", maxWidth: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             <DetailPage
