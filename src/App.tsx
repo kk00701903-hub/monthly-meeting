@@ -873,7 +873,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
               <span className="text-sm">📋</span>
             </div>
             <div>
-              <h1 className="text-[13px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트 시트</h1>
+              <h1 className="text-[13px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트</h1>
               <p className="text-[11px] mt-0.5" style={{ color: "rgba(167,139,250,0.7)" }}>
                 <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1">노란색 항목</span>
                 클릭하여 수정 가능
@@ -1098,9 +1098,9 @@ export default function App() {
   }, []);
 
   const navItems: { id: Page; icon: string; label: string; sub: string }[] = [
+    { id: "script", icon: "📋", label: "진행자 멘트", sub: "회의 진행 스크립트" },
     { id: "ai", icon: "✨", label: "AI 일정 추출", sub: "이미지에서 자동 인식" },
     { id: "master", icon: "⚙️", label: "회의 설정", sub: "발표자 · 시간 · 주제" },
-    { id: "script", icon: "📋", label: "진행자 멘트 시트", sub: "회의 진행 스크립트" },
   ];
 
   return (
