@@ -712,13 +712,13 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
                       <td className="border border-gray-200 px-2 py-2 text-center text-xs text-gray-400 font-mono">{i + 1}</td>
                       {(["from", "to"] as (keyof SectionData)[]).map((f) => (
                         <td key={f} className="border border-gray-200 px-2 py-2">
-                          <input type="text" value={s[f]} onChange={(e) => setPres(i, f, e.target.value)}
+                          <input type="text" value={s[f] as string} onChange={(e) => setPres(i, f, e.target.value)}
                             className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400" />
                         </td>
                       ))}
                       {(["dept", "presenter", "team", "topic", "summary"] as (keyof SectionData)[]).map((f) => (
                         <td key={f} className="border border-gray-200 px-2 py-2">
-                          <input type="text" value={s[f]} onChange={(e) => setPres(i, f, e.target.value)}
+                          <input type="text" value={s[f] as string} onChange={(e) => setPres(i, f, e.target.value)}
                             className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400" />
                         </td>
                       ))}
@@ -1331,7 +1331,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v10", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v11", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
