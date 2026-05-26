@@ -17,8 +17,11 @@ export default defineConfig(({ mode }) => ({
     minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          xlsx: ["xlsx"],
+        },
       },
     },
+    chunkSizeWarningLimit: 700,
   },
 }));

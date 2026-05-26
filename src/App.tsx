@@ -1,8 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import * as XLSX from "xlsx";
 
 /* ──────────────────────────────────────────
    타입 정의
 ─────────────────────────────────────────── */
+type DiscussionItem = {
+  agenda: string;
+  relatedDept: string;
+  keyContent: string;
+  discussionPoints: string;
+  risks: string;
+};
+
 type SectionData = {
   from: string;
   to: string;
@@ -11,6 +20,7 @@ type SectionData = {
   team: string;
   topic: string;
   summary: string;
+  discussion: DiscussionItem[];
 };
 
 type ScriptTexts = {
@@ -55,9 +65,19 @@ const DEFAULT_DATA: MeetingData = {
     ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
   },
   presentations: [
-    { from: "9:25", to: "9:50",  dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",  topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "" },
-    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "" },
-    { from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀", topic: "스마일 주유소 김해점 매출확대 및 손익개선방안", summary: "" },
+    { from: "9:25", to: "9:50",  dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",  topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "", discussion: [] },
+    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "", discussion: [] },
+    {
+      from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀",
+      topic: "스마일 주유소 김해점 매출확대 및 손익개선방안", summary: "",
+      discussion: [
+        { agenda: "근무 체계 변경 및 고령 근로자 노무 관리", relatedDept: "인사팀, 노무팀, 안전보건팀", keyContent: "영업시간 연장에 따른 근무조 편성, 고령 근로자 근무 확대, 백업 프로세스 구축", discussionPoints: "고령 근로자 건강 안전, 1인 근무 보안 대책, 근로계약서 재작성", risks: "인전사고 위험, 건강 리스크, 보안 사고 가능성" },
+        { agenda: "최고가격제 대응 및 수배송 단가 인상안", relatedDept: "기획팀, 재무팀, 물류운영팀", keyContent: "최고가격제 시행 후 이익률 개선 방안, 수배송 단가 인상 기준 조정", discussionPoints: "단가 인상에 따른 협력사 반발, 회사 전체 손익 영향 분석", risks: "협력사 이탈 가능성, 전사 손익 균형 문제" },
+        { agenda: "셀프 주유소 전환 타이밍 및 실효성 검토", relatedDept: "경영전략팀, 재무팀, 시설관리팀", keyContent: "초기 투자비 대비 투자회수 기간, 임대 계약 중도 변경 협의, 인원 감축 연계", discussionPoints: "매출 감소 리스크, 대형 차량 셀프 주유 제한 해소 방안", risks: "투자회수 불확실성, 매출 감소 대비 인건비 절감 균형" },
+        { agenda: "관계사 물량 Lock-in 및 사내 공동 판촉 활성화", relatedDept: "총무팀, 홍보팀, B2B영업팀", keyContent: "관계사 차량 주유 유치, 사내 판촉 활동, 물량 감급 원인 분석", discussionPoints: "캠페인 효과, 홍보 및 정산 시스템 편의성 강화", risks: "물량 감소에 따른 매출 영향, 지속적 관계 관리 필요" },
+        { agenda: "수요 예측 기반 재고 및 매입 단가 관리", relatedDept: "물류기획팀, 구매팀", keyContent: "할인 주유량 변동 분석, 가동률 및 계절별 물동량 공유, 매입 최적화", discussionPoints: "재고 부족/과잉 방지, 본사 예측 데이터 연동 강화", risks: "재고 관리 실패에 따른 비용 증가 위험" },
+      ],
+    },
   ],
 };
 
@@ -235,7 +255,7 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
       from: p.from || "", to: p.to || "",
       dept: (p as { dept?: string }).dept || "",
       presenter: p.presenter || "", team: p.team || "",
-      topic: p.topic || "", summary: "",
+      topic: p.topic || "", summary: "", discussion: [],
     }));
     onApply(updated);
     setAiResult(null);
@@ -405,7 +425,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
   const addRow = () =>
     setLocal((p) => ({
       ...p,
-      presentations: [...p.presentations, { from: "", to: "", dept: "", presenter: "", team: "", topic: "", summary: "" }],
+      presentations: [...p.presentations, { from: "", to: "", dept: "", presenter: "", team: "", topic: "", summary: "", discussion: [] }],
     }));
 
   const removeRow = (i: number) =>
@@ -766,7 +786,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
 /* ──────────────────────────────────────────
    멘트 시트 화면
 ─────────────────────────────────────────── */
-function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean }) {
+function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean; onOpenDetail: (idx: number) => void }) {
   const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, presentations } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
@@ -799,18 +819,22 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; hasDetail?: boolean; script: React.ReactNode; notes: string; bg?: string };
 
   const lastTo = presentations.length > 0 ? presentations[presentations.length - 1].to : "";
 
   const presRows: RowItem[] = presentations.map((p, i) => ({
     from: p.from, to: p.to, label: p.team, dept: p.dept || `발표 ${i + 1}`, presenter: p.presenter,
     topic: p.topic, summary: p.summary, presIdx: i,
+    hasDetail: true,
     script: (
       <div className="space-y-1">
         <p>○ {p.dept ? `${p.dept} ` : (p.team ? `${p.team} ` : "")}발표해 주시기 바랍니다.</p>
         {p.topic && (
           <p className="text-[11px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
+        )}
+        {(p.discussion?.length ?? 0) > 0 && (
+          <p className="text-[10px] text-violet-500 pl-3 mt-0.5">📋 토의 안건 {p.discussion.length}건</p>
         )}
       </div>
     ),
@@ -1019,11 +1043,23 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                         </span>
                       </td>
                       {/* 담당 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-700 align-middle whitespace-nowrap">
+                      <td
+                        className={`border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
+                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenDetail(row.presIdx!) : undefined}
+                        title={row.hasDetail ? "클릭하여 세부 토의 안건 보기" : undefined}
+                      >
                         {row.dept || row.label}
+                        {row.hasDetail && (
+                          <span className="block text-[9px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            세부보기 →
+                          </span>
+                        )}
                       </td>
                       {/* 팀/발표자 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug">
+                      <td
+                        className={`border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 transition-colors" : ""}`}
+                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenDetail(row.presIdx!) : undefined}
+                      >
                         <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
                         {row.presenter && row.presenter !== row.label && (
                           <div className="text-gray-500 text-[11px] mt-0.5">({row.presenter})</div>
@@ -1068,12 +1104,191 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
 }
 
 /* ──────────────────────────────────────────
+   세부 토의 페이지
+─────────────────────────────────────────── */
+const DISC_COLS: { key: keyof DiscussionItem; label: string; width: string }[] = [
+  { key: "agenda",           label: "안건",             width: "w-40" },
+  { key: "relatedDept",      label: "관련 부서",         width: "w-32" },
+  { key: "keyContent",       label: "핵심 발표 내용",    width: "w-56" },
+  { key: "discussionPoints", label: "주요 논의 포인트",  width: "w-56" },
+  { key: "risks",            label: "리스크 및 검토 사항", width: "w-48" },
+];
+
+function DetailPage({
+  pres, onBack, onUpdate,
+}: {
+  pres: SectionData;
+  onBack: () => void;
+  onUpdate: (items: DiscussionItem[]) => void;
+}) {
+  const [items, setItems] = useState<DiscussionItem[]>(pres.discussion ?? []);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const setCell = (i: number, key: keyof DiscussionItem, val: string) => {
+    setItems((prev) => {
+      const next = [...prev];
+      next[i] = { ...next[i], [key]: val };
+      return next;
+    });
+  };
+
+  const addRow = () =>
+    setItems((p) => [...p, { agenda: "", relatedDept: "", keyContent: "", discussionPoints: "", risks: "" }]);
+
+  const removeRow = (i: number) => setItems((p) => p.filter((_, idx) => idx !== i));
+
+  const handleSave = () => {
+    onUpdate(items);
+  };
+
+  const handleExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const wb = XLSX.read(ev.target?.result, { type: "array" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows: string[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" }) as string[][];
+      const dataRows = rows.filter((r) => r.some((c) => String(c).trim()));
+      const headerRow = dataRows[0] ?? [];
+      const isHeader = headerRow.some((h) =>
+        ["안건", "관련", "핵심", "주요", "리스크"].some((kw) => String(h).includes(kw))
+      );
+      const body = isHeader ? dataRows.slice(1) : dataRows;
+      const parsed: DiscussionItem[] = body.map((r) => ({
+        agenda:           String(r[0] ?? ""),
+        relatedDept:      String(r[1] ?? ""),
+        keyContent:       String(r[2] ?? ""),
+        discussionPoints: String(r[3] ?? ""),
+        risks:            String(r[4] ?? ""),
+      }));
+      setItems(parsed);
+    };
+    reader.readAsArrayBuffer(file);
+    e.target.value = "";
+  };
+
+  const handleDownloadTemplate = () => {
+    const ws = XLSX.utils.aoa_to_sheet([
+      ["안건", "관련 부서", "핵심 발표 내용", "주요 논의 포인트", "리스크 및 검토 사항"],
+      ["", "", "", "", ""],
+    ]);
+    ws["!cols"] = [{ wch: 24 }, { wch: 20 }, { wch: 32 }, { wch: 32 }, { wch: 28 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "토의안건");
+    XLSX.writeFile(wb, "토의안건_양식.xlsx");
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-slate-100">
+      {/* 헤더 */}
+      <header className="no-print text-white shadow-md"
+        style={{ background: "linear-gradient(90deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%)", borderBottom: "1px solid rgba(139,92,246,0.25)" }}>
+        <div className="px-6 py-3 flex items-center gap-4">
+          <button onClick={() => { handleSave(); onBack(); }}
+            className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition">
+            ← 뒤로
+          </button>
+          <div className="w-px h-5 bg-white/20" />
+          <div>
+            <p className="text-[11px] text-indigo-300 font-medium">{pres.dept} · {pres.team} ({pres.presenter})</p>
+            <h1 className="text-[14px] font-bold text-white truncate max-w-xl">{pres.topic}</h1>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={handleDownloadTemplate}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 hover:bg-white/20 text-white transition">
+              ↓ 양식 다운로드
+            </button>
+            <button onClick={() => fileRef.current?.click()}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-400 text-white transition">
+              📂 엑셀 업로드
+            </button>
+            <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleExcel} />
+            <button onClick={() => { handleSave(); onBack(); }}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500 hover:bg-indigo-400 text-white transition">
+              저장 후 닫기
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="p-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-gray-800">세부 토의 안건</h2>
+              <p className="text-xs text-gray-400 mt-0.5">엑셀 업로드 또는 직접 입력하여 내용을 관리하세요. 저장은 우측 상단 버튼을 누르세요.</p>
+            </div>
+            <div className="text-xs text-gray-400">{items.length}개 안건</div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-[13px]">
+              <thead>
+                <tr className="bg-gray-700 text-white">
+                  <th className="border border-gray-600 px-3 py-2.5 text-center font-semibold w-8 text-[11px]">#</th>
+                  {DISC_COLS.map((c) => (
+                    <th key={c.key} className={`border border-gray-600 px-3 py-2.5 text-left font-semibold ${c.width}`}>{c.label}</th>
+                  ))}
+                  <th className="border border-gray-600 px-2 py-2.5 w-8"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-16 text-center text-gray-400">
+                      <p className="text-2xl mb-2">📋</p>
+                      <p className="text-sm">엑셀 업로드 또는 + 버튼으로 안건을 추가하세요</p>
+                    </td>
+                  </tr>
+                ) : (
+                  items.map((item, i) => (
+                    <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
+                      <td className="border border-gray-200 px-2 py-2 text-center text-[11px] text-gray-400 font-mono">{i + 1}</td>
+                      {DISC_COLS.map((c) => (
+                        <td key={c.key} className="border border-gray-200 px-2 py-1.5 align-top">
+                          <textarea
+                            value={item[c.key]}
+                            onChange={(e) => setCell(i, c.key, e.target.value)}
+                            rows={2}
+                            className="w-full resize-none text-[12px] text-gray-700 leading-relaxed focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1 py-0.5 bg-transparent hover:bg-indigo-50/30 transition"
+                          />
+                        </td>
+                      ))}
+                      <td className="border border-gray-200 px-2 py-2 text-center align-top">
+                        <button onClick={() => removeRow(i)} className="text-red-400 hover:text-red-600 text-xs font-bold transition">✕</button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="px-6 py-3 border-t border-gray-100 flex items-center gap-3">
+            <button onClick={addRow}
+              className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition border border-indigo-200 hover:border-indigo-400 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100">
+              + 행 추가
+            </button>
+            <button onClick={handleSave}
+              className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-900 transition border border-emerald-200 hover:border-emerald-400 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100">
+              ✓ 저장
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────
    메인 앱 (사이드바 + 라우팅)
 ─────────────────────────────────────────── */
-type Page = "script" | "master" | "ai";
+type Page = "script" | "master" | "ai" | "detail";
 
 export default function App() {
   const [page, setPage] = useState<Page>("script");
+  const [detailIdx, setDetailIdx] = useState<number>(0);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   
   // localStorage에서 데이터 로드 또는 기본값 사용
@@ -1211,8 +1426,23 @@ export default function App() {
         <AiExtractPage onApply={(partial) => setData((prev) => ({ ...prev, ...partial }))} />
       ) : page === "master" ? (
         <MasterPage data={data} onChange={setData} />
+      ) : page === "detail" ? (
+        <DetailPage
+          pres={data.presentations[detailIdx]}
+          onBack={() => setPage("script")}
+          onUpdate={(items) => {
+            const updated = [...data.presentations];
+            updated[detailIdx] = { ...updated[detailIdx], discussion: items };
+            setData({ ...data, presentations: updated });
+          }}
+        />
       ) : (
-        <ScriptPage data={data} onDataChange={setData} isOnline={isOnline} />
+        <ScriptPage
+          data={data}
+          onDataChange={setData}
+          isOnline={isOnline}
+          onOpenDetail={(idx) => { setDetailIdx(idx); setPage("detail"); }}
+        />
       )}
     </div>
   );
