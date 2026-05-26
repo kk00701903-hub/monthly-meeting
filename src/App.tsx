@@ -1020,7 +1020,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
             <table className="w-full border-collapse min-w-[700px]" style={{ borderColor: "#b0b8c4" }}>
               <thead>
                 {/* 1행: 대분류 헤더 */}
-                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[12px]">
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[13px]">
                   <th
                     rowSpan={2}
                     className="border border-white/20 px-4 py-2.5 font-bold text-center w-28 whitespace-nowrap tracking-widest"
@@ -1051,7 +1051,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                   </th>
                 </tr>
                 {/* 2행: 소분류 헤더 */}
-                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[11px]">
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[12px]">
                   <th className="border border-white/20 px-3 py-2 font-semibold text-center w-24 whitespace-nowrap tracking-wider">담 당</th>
                   <th className="border border-white/20 px-3 py-2 font-semibold text-center w-36 whitespace-nowrap tracking-wider">팀 / 발표자</th>
                 </tr>
@@ -1070,18 +1070,18 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                       className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
                     >
                       {/* 시간 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[15px] text-gray-800 whitespace-nowrap align-middle"
-                        style={isLast ? { fontWeight: 700 } : {}}>
-                        <span style={isLast ? { textDecoration: "underline", textDecorationStyle: "solid" } : {}}>
+                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[15px] text-gray-700 whitespace-nowrap align-middle"
+                        style={isLast ? { fontWeight: 800 } : {}}>
+                        <span style={isLast ? { textDecoration: "underline" } : {}}>
                           {row.from}
                         </span>
-                        <span className="mx-1.5 text-gray-400">-</span>
-                        <span style={isLast ? { fontWeight: 700, textDecoration: "underline" } : {}}>
+                        <span className="mx-1.5 text-gray-400 font-normal text-[13px]">-</span>
+                        <span style={isLast ? { fontWeight: 800, textDecoration: "underline" } : {}}>
                           {row.to}
                         </span>
                       </td>
                       {/* 담당 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-800 align-middle whitespace-nowrap">
+                      <td className="border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-700 align-middle whitespace-nowrap">
                         {row.dept || row.label}
                       </td>
                       {/* 팀/발표자 */}
