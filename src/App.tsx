@@ -9,6 +9,7 @@ type SectionData = {
   presenter: string;
   team: string;
   topic: string;
+  summary: string;
 };
 
 type MeetingData = {
@@ -37,12 +38,12 @@ const DEFAULT_DATA: MeetingData = {
   videoTitle: "물류산업종사자만 78만명, 로봇은 정말 인간의 일자리를 뺏어갈까?",
   videoSelector: "인사총무팀",
   videoReason: "AI 및 자동화 기술이 물류 현장에 미치는 영향을 함께 고민하고자 선정하였습니다",
-  yeongUp: { from: "9:15", to: "9:30", presenter: "최배성본부장", team: "영업지원팀", topic: "3PL 표준요율 단가정립을 통한 견적업무 합리화" },
-  gyeongIn1: { from: "9:30", to: "9:45", presenter: "마영기상무", team: "유통사업3팀", topic: "입고 명세서 통일화 테스트 상황 및 향후 과제" },
-  gyeongIn2: { from: "9:45", to: "10:00", presenter: "안영준본부장", team: "경인사업2팀", topic: "AI 활용사례 : 전표처리 자동화" },
-  yeongNam: { from: "10:00", to: "10:15", presenter: "김태성본부장", team: "영남사업1팀", topic: "3PL 크레이트 세척 개선방안 검토" },
-  jungNam: { from: "10:15", to: "10:30", presenter: "하선호본부장", team: "중남사업1팀", topic: "유음료 배송노선 조정 검토" },
-  jegwa: { from: "10:30", to: "10:40", presenter: "표정우본부장", team: "제과사업2팀", topic: "자동화설비 도입을 통한 원가절감 방안" },
+  yeongUp: { from: "9:15", to: "9:30", presenter: "최배성본부장", team: "영업지원팀", topic: "3PL 표준요율 단가정립을 통한 견적업무 합리화", summary: "" },
+  gyeongIn1: { from: "9:30", to: "9:45", presenter: "마영기상무", team: "유통사업3팀", topic: "입고 명세서 통일화 테스트 상황 및 향후 과제", summary: "" },
+  gyeongIn2: { from: "9:45", to: "10:00", presenter: "안영준본부장", team: "경인사업2팀", topic: "AI 활용사례 : 전표처리 자동화", summary: "" },
+  yeongNam: { from: "10:00", to: "10:15", presenter: "김태성본부장", team: "영남사업1팀", topic: "3PL 크레이트 세척 개선방안 검토", summary: "" },
+  jungNam: { from: "10:15", to: "10:30", presenter: "하선호본부장", team: "중남사업1팀", topic: "유음료 배송노선 조정 검토", summary: "" },
+  jegwa: { from: "10:30", to: "10:40", presenter: "표정우본부장", team: "제과사업2팀", topic: "자동화설비 도입을 통한 원가절감 방안", summary: "" },
 };
 
 /* ──────────────────────────────────────────
@@ -620,6 +621,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
                     <Field label="발표자" value={s.presenter} onChange={(v) => setSection(key, "presenter", v)} />
                     <Field label="소속 팀" value={s.team} onChange={(v) => setSection(key, "team", v)} />
                     <Field label="발표 주제" value={s.topic} onChange={(v) => setSection(key, "topic", v)} wide />
+                    <Field label="회의내용 요약" value={s.summary} onChange={(v) => setSection(key, "summary", v)} wide />
                   </div>
                 </div>
               );
@@ -659,7 +661,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; script: React.ReactNode; notes: string; bg?: string };
 
   const rows: RowItem[] = [
     {
@@ -686,7 +688,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "",
     },
     {
-      from: yeongUp.from, to: yeongUp.to, label: yeongUp.team, dept: "발표 1", presenter: `${yeongUp.presenter}`, topic: yeongUp.topic,
+      from: yeongUp.from, to: yeongUp.to, label: yeongUp.team, dept: "발표 1", presenter: `${yeongUp.presenter}`, topic: yeongUp.topic, summary: yeongUp.summary,
       script: (
         <div className="space-y-1">
           <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
@@ -696,7 +698,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "○ 당사 일마감 프로젝트 수행 시 매출정산 유형이 30가지, 세분화하면 80가지 이상이어서 어려움이 있음. 전사 투명하고 표준화된 관리를 위한 PI 시도로 판단됨.\n○ 현재 많은 회사들이 영업효율화 및 전략수립을 위해 견적자동화 솔루션을 도입하고 있음(부릉-한국야쿠르트 등). 데이터기반 견적생성, 견적템플릿 관리, 실시간 단가 업데이트, 승인워크플로우 자동화 등.",
     },
     {
-      from: gyeongIn1.from, to: gyeongIn1.to, label: gyeongIn1.team, dept: "발표 2", presenter: `${gyeongIn1.presenter}`, topic: gyeongIn1.topic,
+      from: gyeongIn1.from, to: gyeongIn1.to, label: gyeongIn1.team, dept: "발표 2", presenter: `${gyeongIn1.presenter}`, topic: gyeongIn1.topic, summary: gyeongIn1.summary,
       script: (
         <div className="space-y-1">
           <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
@@ -706,7 +708,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "○ 사내 AI 교육 6/12일, 사내 지식경영을 통해 교육 게시물 업데이트 중.\n○ 7/22 영업본부 워크샵 시 영업부문 경진대회, 올해 하반기 전사 경진대회 검토.\n→ 사내 AI 활용 수준이 높고 상당히 고무적임.\n○ 회사 볼륨이 커질수록 IT 요구사항 증가. AI를 통해 충분히 사용성을 검토 후 개발요청 시 업무효율 증가 예상.",
     },
     {
-      from: gyeongIn2.from, to: gyeongIn2.to, label: gyeongIn2.team, dept: "발표 3", presenter: `${gyeongIn2.presenter}`, topic: gyeongIn2.topic,
+      from: gyeongIn2.from, to: gyeongIn2.to, label: gyeongIn2.team, dept: "발표 3", presenter: `${gyeongIn2.presenter}`, topic: gyeongIn2.topic, summary: gyeongIn2.summary,
       script: (
         <div className="space-y-1">
           <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
@@ -716,7 +718,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "○ AI 활용을 위한 좋은 시도로 생각됨.\n○ 기업의 AI 활용에 대한 보안/윤리적 제한에 대해서도 고민 필요.\n○ 전표 등 민감정보에 대해서는 유관부서와 사전 공유 및 IT 부서의 가이드라인을 따르는 것이 중요할 것으로 판단됨.",
     },
     {
-      from: yeongNam.from, to: yeongNam.to, label: yeongNam.team, dept: "발표 4", presenter: `${yeongNam.presenter}`, topic: yeongNam.topic,
+      from: yeongNam.from, to: yeongNam.to, label: yeongNam.team, dept: "발표 4", presenter: `${yeongNam.presenter}`, topic: yeongNam.topic, summary: yeongNam.summary,
       script: (
         <div className="space-y-1">
           <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
@@ -726,7 +728,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "",
     },
     {
-      from: jungNam.from, to: jungNam.to, label: jungNam.team, dept: "발표 5", presenter: `${jungNam.presenter}`, topic: jungNam.topic,
+      from: jungNam.from, to: jungNam.to, label: jungNam.team, dept: "발표 5", presenter: `${jungNam.presenter}`, topic: jungNam.topic, summary: jungNam.summary,
       script: (
         <div className="space-y-1">
           <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
@@ -736,7 +738,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "○ 중남사업부는 차량당 배송 커버지역이 넓어 운행거리가 많음. 배송 거래처 증가 시 노선 수 조정 관련 배송기사 반발 여부 확인 필요.\n○ 대리점 도착시간에 문제가 없는지?",
     },
     {
-      from: jegwa.from, to: jegwa.to, label: jegwa.team, dept: "발표 6", presenter: `${jegwa.presenter}`, topic: jegwa.topic,
+      from: jegwa.from, to: jegwa.to, label: jegwa.team, dept: "발표 6", presenter: `${jegwa.presenter}`, topic: jegwa.topic, summary: jegwa.summary,
       script: (
         <div className="space-y-1">
           <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
@@ -883,6 +885,13 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                   >
                     발 표 내 용
                   </th>
+                  <th
+                    rowSpan={2}
+                    className="border border-white/20 px-4 py-2.5 font-bold text-center w-80 tracking-widest"
+                    style={{ letterSpacing: "0.1em" }}
+                  >
+                    회의내용 요약
+                  </th>
                 </tr>
                 {/* 2행: 소분류 헤더 */}
                 <tr style={{ backgroundColor: hdrColor }} className="text-white text-[11px]">
@@ -929,6 +938,14 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                       <td className="border border-gray-300 px-4 py-3 text-gray-800 align-top">
                         {row.script}
                         <Notes text={row.notes} />
+                      </td>
+                      {/* 회의내용 요약 */}
+                      <td className="border border-gray-300 px-4 py-3 text-[12px] text-gray-700 align-top leading-relaxed">
+                        {row.summary ? (
+                          <div className="whitespace-pre-wrap">{row.summary}</div>
+                        ) : (
+                          <span className="text-gray-300 text-xs italic">요약 없음</span>
+                        )}
                       </td>
                     </tr>
                   );
