@@ -511,11 +511,11 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; presenter: string; topic?: string; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; script: React.ReactNode; notes: string; bg?: string };
 
   const rows: RowItem[] = [
     {
-      from: "9:00", to: "9:08", label: "동영상 시청", presenter: "사회자", bg: "bg-indigo-50",
+      from: "9:00", to: "9:08", label: "동영상 시청", dept: "", presenter: videoSelector, bg: "bg-slate-50",
       script: (
         <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 시작하겠습니다.{" "}
@@ -533,12 +533,12 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 결론을 낸다.\n○ 내용이 길고 복잡할 경우, 발표한 내용을 반복해서 요약 정리해준다.\n○ 각 부서별 의견을 묻는다.\n○ 팀별 질문에 대한 대답 요청",
     },
     {
-      from: "9:08", to: "9:15", label: "경영기획팀", presenter: "경영기획팀",
+      from: "9:08", to: "9:15", label: "기획담당", dept: "기획담당", presenter: "경영기획팀",
       script: <p>○ 경영기획팀에서 <E value={month} onChange={set("month")} w="28px" />월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.</p>,
       notes: "",
     },
     {
-      from: yeongUp.from, to: yeongUp.to, label: "영업본부", presenter: `${yeongUp.presenter} / ${yeongUp.team}`, topic: yeongUp.topic,
+      from: yeongUp.from, to: yeongUp.to, label: yeongUp.team, dept: "발표 1", presenter: `${yeongUp.presenter}`, topic: yeongUp.topic,
       script: (
         <div className="space-y-1">
           <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
@@ -548,7 +548,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 당사 일마감 프로젝트 수행 시 매출정산 유형이 30가지, 세분화하면 80가지 이상이어서 어려움이 있음. 전사 투명하고 표준화된 관리를 위한 PI 시도로 판단됨.\n○ 현재 많은 회사들이 영업효율화 및 전략수립을 위해 견적자동화 솔루션을 도입하고 있음(부릉-한국야쿠르트 등). 데이터기반 견적생성, 견적템플릿 관리, 실시간 단가 업데이트, 승인워크플로우 자동화 등.",
     },
     {
-      from: gyeongIn1.from, to: gyeongIn1.to, label: "경인사업1본부", presenter: `${gyeongIn1.presenter} / ${gyeongIn1.team}`, topic: gyeongIn1.topic,
+      from: gyeongIn1.from, to: gyeongIn1.to, label: gyeongIn1.team, dept: "발표 2", presenter: `${gyeongIn1.presenter}`, topic: gyeongIn1.topic,
       script: (
         <div className="space-y-1">
           <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
@@ -558,7 +558,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 사내 AI 교육 6/12일, 사내 지식경영을 통해 교육 게시물 업데이트 중.\n○ 7/22 영업본부 워크샵 시 영업부문 경진대회, 올해 하반기 전사 경진대회 검토.\n→ 사내 AI 활용 수준이 높고 상당히 고무적임.\n○ 회사 볼륨이 커질수록 IT 요구사항 증가. AI를 통해 충분히 사용성을 검토 후 개발요청 시 업무효율 증가 예상.",
     },
     {
-      from: gyeongIn2.from, to: gyeongIn2.to, label: "경인사업2본부", presenter: `${gyeongIn2.presenter} / ${gyeongIn2.team}`, topic: gyeongIn2.topic,
+      from: gyeongIn2.from, to: gyeongIn2.to, label: gyeongIn2.team, dept: "발표 3", presenter: `${gyeongIn2.presenter}`, topic: gyeongIn2.topic,
       script: (
         <div className="space-y-1">
           <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
@@ -568,7 +568,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ AI 활용을 위한 좋은 시도로 생각됨.\n○ 기업의 AI 활용에 대한 보안/윤리적 제한에 대해서도 고민 필요.\n○ 전표 등 민감정보에 대해서는 유관부서와 사전 공유 및 IT 부서의 가이드라인을 따르는 것이 중요할 것으로 판단됨.",
     },
     {
-      from: yeongNam.from, to: yeongNam.to, label: "영남사업본부", presenter: `${yeongNam.presenter} / ${yeongNam.team}`, topic: yeongNam.topic,
+      from: yeongNam.from, to: yeongNam.to, label: yeongNam.team, dept: "발표 4", presenter: `${yeongNam.presenter}`, topic: yeongNam.topic,
       script: (
         <div className="space-y-1">
           <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
@@ -578,7 +578,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "",
     },
     {
-      from: jungNam.from, to: jungNam.to, label: "중남사업본부", presenter: `${jungNam.presenter} / ${jungNam.team}`, topic: jungNam.topic,
+      from: jungNam.from, to: jungNam.to, label: jungNam.team, dept: "발표 5", presenter: `${jungNam.presenter}`, topic: jungNam.topic,
       script: (
         <div className="space-y-1">
           <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
@@ -588,7 +588,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 중남사업부는 차량당 배송 커버지역이 넓어 운행거리가 많음. 배송 거래처 증가 시 노선 수 조정 관련 배송기사 반발 여부 확인 필요.\n○ 대리점 도착시간에 문제가 없는지?",
     },
     {
-      from: jegwa.from, to: jegwa.to, label: "제과사업부", presenter: `${jegwa.presenter} / ${jegwa.team}`, topic: jegwa.topic,
+      from: jegwa.from, to: jegwa.to, label: jegwa.team, dept: "발표 6", presenter: `${jegwa.presenter}`, topic: jegwa.topic,
       script: (
         <div className="space-y-1">
           <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
@@ -598,17 +598,17 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "",
     },
     {
-      from: "10:40", to: "10:50", label: "전체 공유", presenter: "회의진행", bg: "bg-gray-50",
+      from: "10:40", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
       script: <p>○ 각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다.</p>,
       notes: "",
     },
     {
-      from: "10:50", to: "10:50", label: "대표님 보고", presenter: "회의진행",
+      from: "10:50", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행",
       script: <p className="font-semibold text-gray-700">○ 대표님, 금일 발표는 다 끝났습니다.</p>,
       notes: "",
     },
     {
-      from: "10:50", to: "11:00", label: "맺음말", presenter: "사장님", bg: "bg-indigo-50",
+      from: "10:50", to: "11:00", label: "전체", dept: "전체", presenter: "사장님", bg: "bg-blue-50",
       script: (
         <p>
           ○ 대표님 맺음말{" "}
@@ -621,7 +621,8 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
     },
   ];
 
-  const tdBase = "border border-gray-200 px-3 py-2 text-[13px] align-top leading-relaxed";
+  const hdrColor = "#2d3e56";
+  const tdBase = "border border-gray-300 px-3 py-2.5 text-[13px] align-middle leading-relaxed";
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-100">
@@ -697,44 +698,88 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
 
       {/* 메인 테이블 */}
       <div className="px-6 pb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-300 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse min-w-[800px]">
+            <table className="w-full border-collapse min-w-[700px]" style={{ borderColor: "#b0b8c4" }}>
               <thead>
-                <tr className="bg-indigo-900 text-white text-[11px]">
-                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-14 whitespace-nowrap">From</th>
-                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-14 whitespace-nowrap">To</th>
-                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-24 whitespace-nowrap">구분</th>
-                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-32 whitespace-nowrap">담당 / 발표자</th>
-                  <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
+                {/* 1행: 대분류 헤더 */}
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[12px]">
+                  <th
+                    rowSpan={2}
+                    className="border border-white/20 px-4 py-2.5 font-bold text-center w-28 whitespace-nowrap tracking-widest"
+                    style={{ letterSpacing: "0.15em" }}
+                  >
+                    시 간
+                  </th>
+                  <th
+                    colSpan={2}
+                    className="border border-white/20 px-4 py-2.5 font-bold text-center tracking-widest"
+                    style={{ letterSpacing: "0.15em" }}
+                  >
+                    발 표 부 서
+                  </th>
+                  <th
+                    rowSpan={2}
+                    className="border border-white/20 px-4 py-2.5 font-bold text-center tracking-widest"
+                    style={{ letterSpacing: "0.1em" }}
+                  >
+                    발 표 내 용
+                  </th>
+                </tr>
+                {/* 2행: 소분류 헤더 */}
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[11px]">
+                  <th className="border border-white/20 px-3 py-2 font-semibold text-center w-24 whitespace-nowrap tracking-wider">담 당</th>
+                  <th className="border border-white/20 px-3 py-2 font-semibold text-center w-36 whitespace-nowrap tracking-wider">팀 / 발표자</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, i) => (
-                  <tr
-                    key={i}
-                    className={`border-b border-gray-100 hover:brightness-95 transition-all ${row.bg ?? (i % 2 === 0 ? "bg-white" : "bg-slate-50/60")}`}
-                  >
-                    <td className={`${tdBase} text-center font-mono text-gray-600 border-r border-gray-200 whitespace-nowrap`}>{row.from}</td>
-                    <td className={`${tdBase} text-center font-mono text-gray-600 border-r border-gray-200 whitespace-nowrap`}>{row.to}</td>
-                    <td className={`${tdBase} border-r border-gray-200`}>
-                      <span className="flex items-center gap-1">
-                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${row.bg === "bg-indigo-50" ? "bg-indigo-400" : "bg-blue-400"}`} />
-                        <span className="font-semibold text-gray-800 text-[12px] leading-tight">{row.label}</span>
-                      </span>
-                    </td>
-                    <td className={`${tdBase} text-[11px] text-gray-500 border-r border-gray-200`}>{row.presenter}</td>
-                    <td className={`${tdBase} text-gray-800`}>
-                      {row.script}
-                      <Notes text={row.notes} />
-                    </td>
-                  </tr>
-                ))}
+                {rows.map((row, i) => {
+                  const isLast = i === rows.length - 1;
+                  const rowBg = row.bg === "bg-blue-50" ? "#dce8f8"
+                    : row.bg === "bg-slate-50" ? "#f8fafc"
+                    : row.bg === "bg-gray-50" ? "#f9fafb"
+                    : i % 2 === 0 ? "#ffffff" : "#f8f9fb";
+                  return (
+                    <tr
+                      key={i}
+                      style={{ backgroundColor: rowBg }}
+                      className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
+                    >
+                      {/* 시간 */}
+                      <td className="border border-gray-300 px-3 py-3 text-center font-semibold text-[13px] text-gray-700 whitespace-nowrap align-middle"
+                        style={isLast ? { fontWeight: 700 } : {}}>
+                        <span style={isLast ? { textDecoration: "underline", textDecorationStyle: "solid" } : {}}>
+                          {row.from}
+                        </span>
+                        <span className="mx-1.5 text-gray-400">-</span>
+                        <span style={isLast ? { fontWeight: 700, textDecoration: "underline" } : {}}>
+                          {row.to}
+                        </span>
+                      </td>
+                      {/* 담당 */}
+                      <td className="border border-gray-300 px-3 py-3 text-center text-[12px] font-semibold text-gray-700 align-middle whitespace-nowrap">
+                        {row.dept || row.label}
+                      </td>
+                      {/* 팀/발표자 */}
+                      <td className="border border-gray-300 px-3 py-3 text-center text-[11px] text-gray-600 align-middle leading-snug">
+                        <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
+                        {row.presenter && row.presenter !== row.label && (
+                          <div className="text-gray-500 text-[10px] mt-0.5">({row.presenter})</div>
+                        )}
+                      </td>
+                      {/* 발표내용 + 진행자 멘트 */}
+                      <td className="border border-gray-300 px-4 py-3 text-gray-800 align-top">
+                        {row.script}
+                        <Notes text={row.notes} />
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
-        <p className="mt-3 text-center text-xs text-gray-400 no-print">
+        <p className="mt-3 text-center text-[11px] text-gray-400 no-print">
           인쇄 시 추가 검토사항은 숨겨집니다. 브라우저 인쇄 설정에서 "배경 그래픽 포함"을 체크하면 색상이 유지됩니다.
         </p>
       </div>
