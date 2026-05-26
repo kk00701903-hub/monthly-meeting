@@ -68,14 +68,14 @@ function E({ value, onChange, w = "auto" }: { value: string; onChange: (v: strin
 ─────────────────────────────────────────── */
 function Notes({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
-  if (!text) return <span className="text-gray-300 text-xs">—</span>;
+  if (!text) return <span className="text-gray-300 text-[11px]">—</span>;
   return (
     <div>
-      <button onClick={() => setOpen((p) => !p)} className="text-xs text-blue-600 hover:text-blue-800 underline no-print">
-        {open ? "▲ 접기" : "▼ 검토사항 보기"}
+      <button onClick={() => setOpen((p) => !p)} className="text-[11px] text-blue-500 hover:text-blue-700 underline no-print">
+        {open ? "▲ 접기" : "▼ 보기"}
       </button>
       {open && (
-        <div className="mt-1 text-xs text-gray-600 leading-relaxed whitespace-pre-wrap bg-blue-50 p-2 rounded border border-blue-100">
+        <div className="mt-1 text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap bg-blue-50 p-2 rounded border border-blue-100">
           {text}
         </div>
       )}
@@ -513,13 +513,13 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
     {
       from: "9:00", to: "9:08", label: "동영상 시청", presenter: "사회자", bg: "bg-indigo-50",
       script: (
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 시작하겠습니다.{" "}
-            <span className="text-gray-400 italic text-xs">[상호 인사]</span></p>
-          <p className="text-gray-600 text-xs">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
+            <span className="text-gray-400 italic text-[11px]">[상호 인사]</span></p>
+          <p className="text-gray-500 text-[11px]">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
           <p>○ 다음으로 동영상 시청이 있겠습니다. 금일 동영상은 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
-          <p className="text-gray-600 text-xs">
+          <p className="text-gray-500 text-[11px]">
             : 이번 동영상은{" "}
             <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
             <E value={videoReason} onChange={set("videoReason")} w="260px" />
@@ -538,7 +538,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={yeongUp.topic} onChange={setSection("yeongUp", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={yeongUp.topic} onChange={setSection("yeongUp", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "○ 당사 일마감 프로젝트 수행 시 매출정산 유형이 30가지, 세분화하면 80가지 이상이어서 어려움이 있음. 전사 투명하고 표준화된 관리를 위한 PI 시도로 판단됨.\n○ 현재 많은 회사들이 영업효율화 및 전략수립을 위해 견적자동화 솔루션을 도입하고 있음(부릉-한국야쿠르트 등). 데이터기반 견적생성, 견적템플릿 관리, 실시간 단가 업데이트, 승인워크플로우 자동화 등.",
@@ -548,7 +548,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={gyeongIn1.topic} onChange={setSection("gyeongIn1", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={gyeongIn1.topic} onChange={setSection("gyeongIn1", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "○ 사내 AI 교육 6/12일, 사내 지식경영을 통해 교육 게시물 업데이트 중.\n○ 7/22 영업본부 워크샵 시 영업부문 경진대회, 올해 하반기 전사 경진대회 검토.\n→ 사내 AI 활용 수준이 높고 상당히 고무적임.\n○ 회사 볼륨이 커질수록 IT 요구사항 증가. AI를 통해 충분히 사용성을 검토 후 개발요청 시 업무효율 증가 예상.",
@@ -558,7 +558,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={gyeongIn2.topic} onChange={setSection("gyeongIn2", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={gyeongIn2.topic} onChange={setSection("gyeongIn2", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "○ AI 활용을 위한 좋은 시도로 생각됨.\n○ 기업의 AI 활용에 대한 보안/윤리적 제한에 대해서도 고민 필요.\n○ 전표 등 민감정보에 대해서는 유관부서와 사전 공유 및 IT 부서의 가이드라인을 따르는 것이 중요할 것으로 판단됨.",
@@ -568,7 +568,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={yeongNam.topic} onChange={setSection("yeongNam", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={yeongNam.topic} onChange={setSection("yeongNam", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "",
@@ -578,7 +578,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={jungNam.topic} onChange={setSection("jungNam", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={jungNam.topic} onChange={setSection("jungNam", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "○ 중남사업부는 차량당 배송 커버지역이 넓어 운행거리가 많음. 배송 거래처 증가 시 노선 수 조정 관련 배송기사 반발 여부 확인 필요.\n○ 대리점 도착시간에 문제가 없는지?",
@@ -588,7 +588,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <div className="space-y-1">
           <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
-          <p className="text-xs text-blue-700 pl-3">→ <E value={jegwa.topic} onChange={setSection("jegwa", "topic")} w="220px" /></p>
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={jegwa.topic} onChange={setSection("jegwa", "topic")} w="220px" /></p>
         </div>
       ),
       notes: "",
@@ -608,32 +608,32 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       script: (
         <p>
           ○ 대표님 맺음말{" "}
-          <span className="text-gray-400 italic text-xs ml-1">[발언 후]</span>
+          <span className="text-gray-400 italic text-[11px] ml-1">[발언 후]</span>
           {" "}→ 이상으로 <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 마치겠습니다.{" "}
-          <span className="text-gray-400 italic text-xs">[상호 인사]</span>
+          <span className="text-gray-400 italic text-[11px]">[상호 인사]</span>
         </p>
       ),
       notes: "",
     },
   ];
 
-  const tdBase = "border border-gray-200 px-3 py-2.5 text-sm align-top leading-relaxed";
+  const tdBase = "border border-gray-200 px-3 py-2 text-[13px] align-top leading-relaxed";
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-100">
       {/* 헤더 */}
       <header className="bg-gradient-to-r from-indigo-900 to-indigo-700 text-white shadow-lg no-print">
-        <div className="px-6 py-4 flex items-center justify-between flex-wrap gap-3">
+        <div className="px-6 py-3.5 flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-lg font-bold tracking-tight">📋 업무혁신회의 — 진행자 멘트 시트</h1>
-            <p className="text-indigo-200 text-xs mt-0.5">
-              <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-xs font-bold mr-1">노란색 항목</span>
+            <h1 className="text-base font-bold tracking-tight">📋 업무혁신회의 — 진행자 멘트 시트</h1>
+            <p className="text-indigo-200 text-[11px] mt-0.5">
+              <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[11px] font-bold mr-1">노란색 항목</span>
               을 클릭하면 바로 수정할 수 있습니다
             </p>
           </div>
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center gap-1.5 bg-white text-indigo-800 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-50 transition shadow"
+            className="no-print flex items-center gap-1.5 bg-white text-indigo-800 px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-indigo-50 transition shadow"
           >
             🖨️ 인쇄 / PDF 저장
           </button>
@@ -641,60 +641,60 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       </header>
 
       {/* 회의 기본정보 카드 */}
-      <div className="px-6 pt-5 pb-2">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 flex flex-wrap gap-x-8 gap-y-3 items-center">
-          <div className="flex items-center gap-2 text-sm">
+      <div className="px-6 pt-4 pb-2">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 items-center">
+          <div className="flex items-center gap-1.5 text-[13px]">
             <span className="text-gray-500 font-medium">📅 회의명</span>
             <E value={month} onChange={set("month")} w="28px" />
             <span className="text-gray-700">월 업무혁신회의</span>
           </div>
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-1.5 text-[13px]">
             <span className="text-gray-500 font-medium">🗓 일자</span>
             <E value={meetingDate} onChange={set("meetingDate")} w="110px" />
           </div>
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-1.5 text-[13px]">
             <span className="text-gray-500 font-medium">⏰ 종료예정</span>
             <E value={endTime} onChange={set("endTime")} w="24px" />
             <span className="text-gray-700">시</span>
           </div>
-          <div className="ml-auto text-xs text-gray-400 no-print italic hidden md:block">
+          <div className="ml-auto text-[11px] text-gray-400 no-print italic hidden md:block">
             ※ 사전에 각 부서별 질문사항 미리 확인 후 통화 (회의자료 확인)
           </div>
         </div>
       </div>
 
       {/* 범례 */}
-      <div className="px-6 py-2 no-print">
-        <div className="flex flex-wrap gap-4 text-xs text-gray-500 items-center">
+      <div className="px-6 py-1.5 no-print">
+        <div className="flex flex-wrap gap-3 text-[11px] text-gray-400 items-center">
           <span className="flex items-center gap-1">
-            <span className="inline-block w-3 h-3 rounded bg-yellow-100 border border-yellow-300" />
-            매번 수정이 필요한 항목 (클릭하여 편집)
+            <span className="inline-block w-2.5 h-2.5 rounded bg-yellow-100 border border-yellow-300" />
+            수정 가능 항목
           </span>
           <span className="flex items-center gap-1">
-            <span className="inline-block w-3 h-3 rounded bg-blue-100 border border-blue-200" />
-            발표 주제 (→ 화살표 아래)
+            <span className="inline-block w-2.5 h-2.5 rounded bg-blue-100 border border-blue-200" />
+            발표 주제
           </span>
           <span className="flex items-center gap-1">
-            <span className="inline-block w-3 h-3 rounded bg-indigo-50 border border-indigo-200" />
-            오프닝 / 클로징 구간
+            <span className="inline-block w-2.5 h-2.5 rounded bg-indigo-50 border border-indigo-200" />
+            오프닝 / 클로징
           </span>
         </div>
       </div>
 
       {/* 메인 테이블 */}
-      <div className="px-6 pb-10">
+      <div className="px-6 pb-8">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse min-w-[700px]">
+            <table className="w-full border-collapse min-w-[800px]">
               <thead>
-                <tr className="bg-indigo-900 text-white text-xs">
-                  <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-16 whitespace-nowrap">From</th>
-                  <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-16 whitespace-nowrap">To</th>
-                  <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-28 whitespace-nowrap">구분</th>
-                  <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-36 whitespace-nowrap">담당 / 발표자</th>
-                  <th className="px-3 py-3 font-semibold text-left border-r border-indigo-700 w-52">회의 주제</th>
-                  <th className="px-3 py-3 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
-                  <th className="px-3 py-3 font-semibold text-center whitespace-nowrap no-print w-32">추가 검토사항</th>
+                <tr className="bg-indigo-900 text-white text-[11px]">
+                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-14 whitespace-nowrap">From</th>
+                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-14 whitespace-nowrap">To</th>
+                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-24 whitespace-nowrap">구분</th>
+                  <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-32 whitespace-nowrap">담당 / 발표자</th>
+                  <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700 w-48">회의 주제</th>
+                  <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
+                  <th className="px-3 py-2.5 font-semibold text-center whitespace-nowrap no-print w-28">검토사항</th>
                 </tr>
               </thead>
               <tbody>
@@ -703,16 +703,16 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                     key={i}
                     className={`border-b border-gray-100 hover:brightness-95 transition-all ${row.bg ?? (i % 2 === 0 ? "bg-white" : "bg-slate-50/60")}`}
                   >
-                    <td className={`${tdBase} text-center font-mono text-gray-700 border-r border-gray-200 whitespace-nowrap`}>{row.from}</td>
-                    <td className={`${tdBase} text-center font-mono text-gray-700 border-r border-gray-200 whitespace-nowrap`}>{row.to}</td>
+                    <td className={`${tdBase} text-center font-mono text-gray-600 border-r border-gray-200 whitespace-nowrap`}>{row.from}</td>
+                    <td className={`${tdBase} text-center font-mono text-gray-600 border-r border-gray-200 whitespace-nowrap`}>{row.to}</td>
                     <td className={`${tdBase} border-r border-gray-200`}>
-                      <span className="flex items-center gap-1.5">
-                        <span className={`w-2 h-2 rounded-full flex-shrink-0 ${row.bg === "bg-indigo-50" ? "bg-indigo-400" : "bg-blue-400"}`} />
-                        <span className="font-semibold text-gray-800 text-xs leading-tight">{row.label}</span>
+                      <span className="flex items-center gap-1">
+                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${row.bg === "bg-indigo-50" ? "bg-indigo-400" : "bg-blue-400"}`} />
+                        <span className="font-semibold text-gray-800 text-[12px] leading-tight">{row.label}</span>
                       </span>
                     </td>
-                    <td className={`${tdBase} text-xs text-gray-600 border-r border-gray-200`}>{row.presenter}</td>
-                    <td className={`${tdBase} text-xs border-r border-gray-200`}>
+                    <td className={`${tdBase} text-[11px] text-gray-500 border-r border-gray-200`}>{row.presenter}</td>
+                    <td className={`${tdBase} text-[11px] border-r border-gray-200`}>
                       {row.topic
                         ? <span className="text-blue-700 font-medium leading-snug">{row.topic}</span>
                         : <span className="text-gray-300">—</span>}
