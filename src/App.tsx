@@ -997,7 +997,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                   </th>
                   <th
                     rowSpan={2}
-                    className="border border-white/20 px-4 py-2.5 font-bold text-center w-80 tracking-widest"
+                    className="no-print border border-white/20 px-4 py-2.5 font-bold text-center w-80 tracking-widest"
                     style={{ letterSpacing: "0.1em" }}
                   >
                     회의내용 요약
@@ -1062,7 +1062,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                       <Notes text={row.notes} />
                     </td>
                       {/* 회의내용 요약 */}
-                      <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-700 align-top leading-relaxed">
+                      <td className="no-print border border-gray-300 px-4 py-3 text-[13px] text-gray-700 align-top leading-relaxed">
                         {(row.presIdx !== undefined || row.onSummaryChange) ? (
                           <span
                             contentEditable
