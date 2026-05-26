@@ -850,7 +850,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
             <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
             <E value={videoReason} onChange={set("videoReason")} w="260px" />
           </p>
-          <p>○ <E value={videoPresentDept ?? "영업본부"} onChange={set("videoPresentDept")} w="72px" />에서 동영상 선정사유 설명해 주시기 바랍니다.</p>
+          <p>○ <E value={videoPresentDept ?? "영업본부"} onChange={set("videoPresentDept")} w="72px" />에서는 동영상 선정사유를 설명해 주시기 바랍니다.</p>
         </div>
       ),
       notes: "",
