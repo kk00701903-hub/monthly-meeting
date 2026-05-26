@@ -702,7 +702,6 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                   <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-14 whitespace-nowrap">To</th>
                   <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-24 whitespace-nowrap">구분</th>
                   <th className="px-3 py-2.5 font-semibold text-center border-r border-indigo-700 w-32 whitespace-nowrap">담당 / 발표자</th>
-                  <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700 w-48">회의 주제</th>
                   <th className="px-3 py-2.5 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
                   <th className="px-3 py-2.5 font-semibold text-center whitespace-nowrap no-print w-28">검토사항</th>
                 </tr>
@@ -722,11 +721,6 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                       </span>
                     </td>
                     <td className={`${tdBase} text-[11px] text-gray-500 border-r border-gray-200`}>{row.presenter}</td>
-                    <td className={`${tdBase} text-[11px] border-r border-gray-200`}>
-                      {row.topic
-                        ? <span className="text-blue-700 font-medium leading-snug">{row.topic}</span>
-                        : <span className="text-gray-300">—</span>}
-                    </td>
                     <td className={`${tdBase} text-gray-800`}>{row.script}</td>
                     <td className={`${tdBase} no-print`}><Notes text={row.notes} /></td>
                   </tr>
