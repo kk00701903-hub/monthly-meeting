@@ -765,13 +765,30 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
     style.id = "print-style";
     style.textContent = `
       @media print {
+        /* 레이아웃 클리핑 해제 */
+        html, body {
+          height: auto !important;
+          overflow: visible !important;
+        }
+        .h-screen { height: auto !important; }
+        .overflow-hidden { overflow: visible !important; }
+        .overflow-y-auto { overflow: visible !important; height: auto !important; }
+        .flex-1 { flex: none !important; height: auto !important; }
+        .bg-slate-100 { height: auto !important; overflow: visible !important; }
+
+        /* UI 요소 숨김 */
         .no-print { display: none !important; }
         aside { display: none !important; }
+
+        /* 색상 보정 */
         header { background: #312e81 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .bg-indigo-50 { background: #eef2ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         span[contenteditable] { border: none !important; background: #fef9c3 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        body { font-size: 10px; }
+
+        /* 페이지 설정 */
+        body { font-size: 10px; margin: 0; padding: 0; }
         tr { page-break-inside: avoid; }
+        table { page-break-inside: auto; }
       }
     `;
     document.head.appendChild(style);
