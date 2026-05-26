@@ -54,7 +54,7 @@ const DEFAULT_DATA: MeetingData = {
   meetingDate: `${_year}년 ${_month}월`,
   endTime: "11",
   videoTitle: "고성과 조직에는 반드시 '이것'이 확보되어 있습니다.",
-  videoSelector: "경영기획팀",
+  videoSelector: "유통물류사업부",
   videoReason: "고성과 조직의 핵심 요소를 함께 고민하고 우리 조직에 적용하고자 선정하였습니다",
   videoSummary: "강연자: 황성현 ㈜권팀인사이트(경영컨설팅 전문회사) 대표\n- 고성과 조직은 \"실패하더라도 불이익을 받지 않는다\"는 \"심리적 안정감\"을 구축하고 있음\n- 미래 사회와 인공지능 시대의 조직은 정답을 맞추는 것보다 다양한 해답을 찾는 힘이 필요하며, 실패를 담당히 공유하는 시스템을 구축해야함\n- 과거의 성공방식에 매몰되지 않고, 새로운 세대가 도전을 하도록 리더와 경영진이 심리적 공간을 마련해주는 것이 핵심임",
   scripts: {
@@ -1230,7 +1230,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v4");
+      const saved = localStorage.getItem("meeting_data_v5");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1241,7 +1241,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v4", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v5", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
