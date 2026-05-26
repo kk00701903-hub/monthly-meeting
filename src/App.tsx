@@ -709,23 +709,80 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
             <span className="text-indigo-200 text-base">🏢</span>
             <h3 className="font-semibold text-white text-sm">본부별 발표 일정</h3>
           </div>
-          <div className="divide-y divide-gray-100">
-            {sections.map(({ key, label, color }) => {
-              const s = local[key] as SectionData;
-              return (
-                <div key={key} className={`px-6 py-5 ${color} border-l-4`}>
-                  <p className="text-xs font-bold text-gray-600 mb-3 uppercase tracking-wide">{label}</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Field label="시작 시간" value={s.from} onChange={(v) => setSection(key, "from", v)} />
-                    <Field label="종료 시간" value={s.to} onChange={(v) => setSection(key, "to", v)} />
-                    <Field label="발표자" value={s.presenter} onChange={(v) => setSection(key, "presenter", v)} />
-                    <Field label="소속 팀" value={s.team} onChange={(v) => setSection(key, "team", v)} />
-                    <Field label="발표 주제" value={s.topic} onChange={(v) => setSection(key, "topic", v)} wide />
-                    <Field label="회의내용 요약" value={s.summary} onChange={(v) => setSection(key, "summary", v)} wide />
-                  </div>
-                </div>
-              );
-            })}
+          <div className="p-6 overflow-x-auto">
+            <table className="w-full border-collapse border border-gray-200">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-20">구분</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">시작시간</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">종료시간</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">발표자</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-32">소속팀</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표주제</th>
+                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">회의내용요약</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sections.map(({ key, label }) => {
+                  const s = local[key] as SectionData;
+                  return (
+                    <tr key={key} className="hover:bg-gray-50">
+                      <td className="border border-gray-200 px-3 py-2 text-center">
+                        <span className="text-xs font-medium text-gray-700">{label}</span>
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.from}
+                          onChange={(e) => setSection(key, "from", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.to}
+                          onChange={(e) => setSection(key, "to", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.presenter}
+                          onChange={(e) => setSection(key, "presenter", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.team}
+                          onChange={(e) => setSection(key, "team", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.topic}
+                          onChange={(e) => setSection(key, "topic", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                      <td className="border border-gray-200 px-2 py-2">
+                        <input
+                          type="text"
+                          value={s.summary}
+                          onChange={(e) => setSection(key, "summary", e.target.value)}
+                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </section>
       </div>
