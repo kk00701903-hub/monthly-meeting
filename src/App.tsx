@@ -716,10 +716,10 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
       <div className="space-y-1">
         <p>○ {p.dept ? `${p.dept} ` : (p.team ? `${p.team} ` : "")}발표해 주시기 바랍니다.</p>
         {p.topic && (
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
+          <p className="text-[13px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
         {(p.discussion?.length ?? 0) > 0 && (
-          <p className="text-[10px] text-violet-500 pl-3 mt-0.5">📋 토의 안건 {p.discussion.length}건</p>
+          <p className="text-[13px] text-violet-500 pl-3 mt-0.5">📋 토의 안건 {p.discussion.length}건</p>
         )}
       </div>
     ),
@@ -734,11 +734,11 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
       script: (
         <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 {scripts.opening}{" "}
-            <span className="text-gray-400 italic text-[11px]">[상호 인사]</span></p>
-          <p className="text-gray-500 text-[11px]">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
+            <span className="text-gray-400 italic">[상호 인사]</span></p>
+          <p className="text-gray-500">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
           <p>○ {scripts.videoIntro} 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
-          <p className="text-gray-500 text-[11px]">
+          <p className="text-gray-500">
             : {scripts.videoReason}{" "}
             <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
             <E value={videoReason} onChange={set("videoReason")} w="260px" />
@@ -768,9 +768,9 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
       script: (
         <p>
           ○ 대표님 맺음말{" "}
-          <span className="text-gray-400 italic text-[11px] ml-1">[발언 후]</span>
+          <span className="text-gray-400 italic ml-1">[발언 후]</span>
           {" "}→ <E value={month} onChange={set("month")} w="28px" />월 {scripts.ending}{" "}
-          <span className="text-gray-400 italic text-[11px]">[상호 인사]</span>
+          <span className="text-gray-400 italic">[상호 인사]</span>
         </p>
       ),
       notes: "",
@@ -919,25 +919,25 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
                       className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
                     >
                       {/* 시간 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[15px] text-gray-700 whitespace-nowrap align-middle"
+                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[13px] text-gray-700 whitespace-nowrap align-middle"
                         style={isLast ? { fontWeight: 800 } : {}}>
                         <span style={isLast ? { textDecoration: "underline" } : {}}>
                           {row.from}
                         </span>
-                        <span className="mx-1.5 text-gray-400 font-normal text-[13px]">-</span>
+                        <span className="mx-1.5 text-gray-400 font-normal">-</span>
                         <span style={isLast ? { fontWeight: 800, textDecoration: "underline" } : {}}>
                           {row.to}
                         </span>
                       </td>
                       {/* 담당 */}
                       <td
-                        className={`border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
+                        className={`border border-gray-300 px-3 py-3 text-center text-[13px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
                         onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenDetail(row.presIdx!) : undefined}
                         title={row.hasDetail ? "클릭하여 세부 토의 안건 보기" : undefined}
                       >
                         {row.dept || row.label}
                         {row.hasDetail && (
-                          <span className="block text-[9px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="block text-[10px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                             세부보기 →
                           </span>
                         )}
@@ -949,16 +949,16 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
                       >
                         <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
                         {row.presenter && row.presenter !== row.label && (
-                          <div className="text-gray-500 text-[11px] mt-0.5">({row.presenter})</div>
+                          <div className="text-gray-500 text-[13px] mt-0.5">({row.presenter})</div>
                         )}
                       </td>
                       {/* 발표내용 + 진행자 멘트 */}
-                      <td className="border border-gray-300 px-4 py-3 text-gray-800 align-top">
+                      <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-800 align-top leading-relaxed">
                         {row.script}
                         <Notes text={row.notes} />
                       </td>
                       {/* 회의내용 요약 */}
-                      <td className="border border-gray-300 px-4 py-3 text-[12px] text-gray-700 align-top leading-relaxed">
+                      <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-700 align-top leading-relaxed">
                         {(row.presIdx !== undefined || row.onSummaryChange) ? (
                           <span
                             contentEditable
