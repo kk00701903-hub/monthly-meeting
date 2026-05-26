@@ -41,6 +41,7 @@ type MeetingData = {
   videoSelector: string;
   videoReason: string;
   videoSummary: string;
+  videoPresentDept: string;
   scripts: ScriptTexts;
   presentations: SectionData[];
 };
@@ -56,6 +57,7 @@ const DEFAULT_DATA: MeetingData = {
   videoTitle: "고성과 조직에는 반드시 '이것'이 확보되어 있습니다.",
   videoSelector: "유통물류사업부",
   videoReason: "고성과 조직의 핵심 요소를 함께 고민하고 우리 조직에 적용하고자 선정하였습니다",
+  videoPresentDept: "영업본부",
   videoSummary: "강연자: 황성현 ㈜권팀인사이트(경영컨설팅 전문회사) 대표\n- 고성과 조직은 \"실패하더라도 불이익을 받지 않는다\"는 \"심리적 안정감\"을 구축하고 있음\n- 미래 사회와 인공지능 시대의 조직은 정답을 맞추는 것보다 다양한 해답을 찾는 힘이 필요하며, 실패를 담당히 공유하는 시스템을 구축해야함\n- 과거의 성공방식에 매몰되지 않고, 새로운 세대가 도전을 하도록 리더와 경영진이 심리적 공간을 마련해주는 것이 핵심임",
   scripts: {
     opening: "월 업무혁신회의를 시작하겠습니다.",
@@ -530,6 +532,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
             <Field label="회의 일자" value={local.meetingDate} onChange={(v) => set("meetingDate", v)} />
             <Field label="종료 예정 시간" value={local.endTime} onChange={(v) => set("endTime", v)} />
             <Field label="동영상 선정 팀" value={local.videoSelector} onChange={(v) => set("videoSelector", v)} />
+            <Field label="동영상 선정사유 발표 부서" value={local.videoPresentDept ?? "영업본부"} onChange={(v) => set("videoPresentDept", v)} />
             <Field label="동영상 제목" value={local.videoTitle} onChange={(v) => set("videoTitle", v)} wide />
             <Field label="동영상 선정 사유" value={local.videoReason} onChange={(v) => set("videoReason", v)} wide />
           </div>
@@ -720,7 +723,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
    멘트 시트 화면
 ─────────────────────────────────────────── */
 function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean; onOpenModal: (idx: number) => void }) {
-  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, presentations } = data;
+  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, videoPresentDept, scripts, presentations } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
   const setPresTopic = (i: number) => (v: string) => {
@@ -807,6 +810,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
             <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
             <E value={videoReason} onChange={set("videoReason")} w="260px" />
           </p>
+          <p>○ <E value={videoPresentDept ?? "영업본부"} onChange={set("videoPresentDept")} w="72px" />에서 동영상 선정사유 설명해 주시기 바랍니다.</p>
         </div>
       ),
       notes: "",
