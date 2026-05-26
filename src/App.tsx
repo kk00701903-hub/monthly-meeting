@@ -634,7 +634,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
 /* ──────────────────────────────────────────
    멘트 시트 화면
 ─────────────────────────────────────────── */
-function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (d: MeetingData) => void }) {
+function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean }) {
   const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
@@ -803,6 +803,16 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
         </div>
       </header>
 
+      {/* 오프라인 경고 배너 */}
+      {!isOnline && (
+        <div className="no-print bg-amber-500 border-b border-amber-600 px-6 py-2 flex items-center gap-2">
+          <span className="text-amber-900 text-sm">⚠️</span>
+          <p className="text-[11px] text-amber-900 font-medium">
+            오프라인 모드 — 마지막 저장된 데이터를 표시 중입니다. 변경사항은 로컬에 저장됩니다.
+          </p>
+        </div>
+      )}
+
       {/* 회의 기본정보 카드 */}
       <div className="px-6 pt-4 pb-2">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 items-center">
@@ -942,8 +952,36 @@ type Page = "script" | "master" | "ai";
 
 export default function App() {
   const [page, setPage] = useState<Page>("script");
-  const [data, setData] = useState<MeetingData>(DEFAULT_DATA);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  
+  // localStorage에서 데이터 로드 또는 기본값 사용
+  const [data, setData] = useState<MeetingData>(() => {
+    try {
+      const saved = localStorage.getItem("meeting_data");
+      return saved ? JSON.parse(saved) : DEFAULT_DATA;
+    } catch {
+      return DEFAULT_DATA;
+    }
+  });
+  
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // 데이터 변경 시 자동 저장
+  useEffect(() => {
+    localStorage.setItem("meeting_data", JSON.stringify(data));
+  }, [data]);
+
+  // 온라인/오프라인 상태 감지
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   const navItems: { id: Page; icon: string; label: string; sub: string }[] = [
     { id: "ai", icon: "✨", label: "AI 일정 추출", sub: "이미지에서 자동 인식" },
@@ -1031,10 +1069,17 @@ export default function App() {
 
         {/* 하단 배지 */}
         {sidebarOpen && (
-          <div className="px-4 py-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="px-4 py-3 space-y-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
             <p className="text-[10px] leading-relaxed" style={{ color: "rgba(100,116,139,0.8)" }}>
               {data.month}월 회의 &middot; 종료 {data.endTime}시
             </p>
+            <div className="flex items-center gap-1.5">
+              <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? "bg-emerald-400" : "bg-red-400"}`}
+                style={{ boxShadow: isOnline ? "0 0 6px #34d399" : "0 0 6px #f87171" }} />
+              <span className="text-[10px]" style={{ color: isOnline ? "rgba(52,211,153,0.9)" : "rgba(248,113,113,0.9)" }}>
+                {isOnline ? "온라인" : "오프라인"}
+              </span>
+            </div>
           </div>
         )}
       </aside>
@@ -1045,7 +1090,7 @@ export default function App() {
       ) : page === "master" ? (
         <MasterPage data={data} onChange={setData} />
       ) : (
-        <ScriptPage data={data} onDataChange={setData} />
+        <ScriptPage data={data} onDataChange={setData} isOnline={isOnline} />
       )}
     </div>
   );
