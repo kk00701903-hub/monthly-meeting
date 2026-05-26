@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 type SectionData = {
   from: string;
   to: string;
+  dept: string;
   presenter: string;
   team: string;
   topic: string;
@@ -41,9 +42,9 @@ const DEFAULT_DATA: MeetingData = {
   month: _month,
   meetingDate: `${_year}년 ${_month}월`,
   endTime: "11",
-  videoTitle: "물류산업종사자만 78만명, 로봇은 정말 인간의 일자리를 뺏어갈까?",
-  videoSelector: "인사총무팀",
-  videoReason: "AI 및 자동화 기술이 물류 현장에 미치는 영향을 함께 고민하고자 선정하였습니다",
+  videoTitle: "고성과 조직에는 반드시 '이것'이 확보되어 있습니다.",
+  videoSelector: "경영기획팀",
+  videoReason: "고성과 조직의 핵심 요소를 함께 고민하고 우리 조직에 적용하고자 선정하였습니다",
   scripts: {
     opening: "월 업무혁신회의를 시작하겠습니다.",
     videoIntro: "다음으로 동영상 시청이 있겠습니다. 금일 동영상은",
@@ -53,7 +54,11 @@ const DEFAULT_DATA: MeetingData = {
     finalReport: "대표님, 금일 발표는 다 끝났습니다.",
     ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
   },
-  presentations: [],
+  presentations: [
+    { from: "9:25", to: "9:50",  dept: "관리담당", presenter: "서선범 팀장", team: "정보전략팀",  topic: "유통물류 시스템 모바일 PWA 전환 추진 결과 보고", summary: "" },
+    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "" },
+    { from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀", topic: "스마일 주유소 김해점 매출확대 및 손익개선방안", summary: "" },
+  ],
 };
 
 /* ──────────────────────────────────────────
@@ -169,6 +174,7 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
     {
       "from": "시작시간 (예: 9:25)",
       "to": "종료시간 (예: 9:50)",
+      "dept": "담당 구분 (예: 관리담당, 영업담당, 없으면 빈 문자열)",
       "presenter": "발표자 이름/직책 (없으면 빈 문자열)",
       "team": "팀/부서명 (없으면 빈 문자열)",
       "topic": "발표 주제"
@@ -227,6 +233,7 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
     if (aiResult.videoReason) updated.videoReason = aiResult.videoReason;
     updated.presentations = (aiResult.presentations || []).map((p) => ({
       from: p.from || "", to: p.to || "",
+      dept: (p as { dept?: string }).dept || "",
       presenter: p.presenter || "", team: p.team || "",
       topic: p.topic || "", summary: "",
     }));
@@ -398,7 +405,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
   const addRow = () =>
     setLocal((p) => ({
       ...p,
-      presentations: [...p.presentations, { from: "", to: "", presenter: "", team: "", topic: "", summary: "" }],
+      presentations: [...p.presentations, { from: "", to: "", dept: "", presenter: "", team: "", topic: "", summary: "" }],
     }));
 
   const removeRow = (i: number) =>
@@ -672,10 +679,10 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
               </thead>
               <tbody className="text-gray-600">
                 {[
-                  { label: "동영상 시청", from: "9:00", to: "9:08" },
-                  { label: "경영기획팀 보고", from: "9:08", to: "9:15" },
-                  { label: "전체 공유", from: "10:40", to: "10:50" },
-                  { label: "대표님 보고 → 맺음말", from: "10:50", to: "11:00" },
+                  { label: "동영상 시청", from: "9:00", to: "9:18" },
+                  { label: "경영기획팀 보고", from: "9:18", to: "9:25" },
+                  { label: "전체 공유", from: "", to: "" },
+                  { label: "대표님 보고 → 맺음말", from: "", to: `${local.endTime}:00` },
                 ].map((r) => (
                   <tr key={r.label} className="border-b border-gray-50">
                     <td className="py-2.5 pr-4 text-gray-500">{r.label}</td>
@@ -712,6 +719,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-8">#</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">시작</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">종료</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">담당구분</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">발표자</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-32">소속팀</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표주제</th>
@@ -729,7 +737,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
                             className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400" />
                         </td>
                       ))}
-                      {(["presenter", "team", "topic", "summary"] as (keyof SectionData)[]).map((f) => (
+                      {(["dept", "presenter", "team", "topic", "summary"] as (keyof SectionData)[]).map((f) => (
                         <td key={f} className="border border-gray-200 px-2 py-2">
                           <input type="text" value={s[f]} onChange={(e) => setPres(i, f, e.target.value)}
                             className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400" />
@@ -796,11 +804,11 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
   const lastTo = presentations.length > 0 ? presentations[presentations.length - 1].to : "";
 
   const presRows: RowItem[] = presentations.map((p, i) => ({
-    from: p.from, to: p.to, label: p.team, dept: `발표 ${i + 1}`, presenter: p.presenter,
+    from: p.from, to: p.to, label: p.team, dept: p.dept || `발표 ${i + 1}`, presenter: p.presenter,
     topic: p.topic, summary: p.summary, presIdx: i,
     script: (
       <div className="space-y-1">
-        <p>○ {p.team ? `${p.team} ` : ""}발표해 주시기 바랍니다.</p>
+        <p>○ {p.dept ? `${p.dept} ` : (p.team ? `${p.team} ` : "")}발표해 주시기 바랍니다.</p>
         {p.topic && (
           <p className="text-[11px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
@@ -811,7 +819,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
 
   const rows: RowItem[] = [
     {
-      from: "9:00", to: "9:08", label: "동영상 시청", dept: "", presenter: videoSelector, bg: "bg-slate-50",
+      from: "9:00", to: "9:18", label: "동영상 시청", dept: "", presenter: videoSelector, bg: "bg-slate-50",
       script: (
         <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 {scripts.opening}{" "}
@@ -829,7 +837,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       notes: "",
     },
     {
-      from: "9:08", to: "9:15", label: "기획담당", dept: "기획담당", presenter: "경영기획팀",
+      from: "9:18", to: "9:25", label: "기획담당", dept: "기획담당", presenter: "경영기획팀",
       script: <p>○ {scripts.planningTeam.replace("월", `${month}월`)}</p>,
       notes: "",
     },
@@ -1071,7 +1079,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data");
+      const saved = localStorage.getItem("meeting_data_v2");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1082,7 +1090,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v2", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
