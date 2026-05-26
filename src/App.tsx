@@ -876,7 +876,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
       notes: "",
     },
     {
-      from: "", to: `${endTime}:00`, label: "전체", dept: "전체", presenter: "사장님", bg: "bg-blue-50",
+      from: "", to: `${endTime}:00`, label: "전체", dept: "전체", presenter: "대표님", bg: "bg-blue-50",
       script: (
         <p>
           ○ 대표님 맺음말{" "}
