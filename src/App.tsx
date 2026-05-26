@@ -1101,12 +1101,12 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
 /* ──────────────────────────────────────────
    세부 토의 페이지
 ─────────────────────────────────────────── */
-const DISC_COLS: { key: keyof DiscussionItem; label: string; width: string }[] = [
-  { key: "agenda",           label: "안건",             width: "w-40" },
-  { key: "relatedDept",      label: "관련 부서",         width: "w-32" },
-  { key: "keyContent",       label: "핵심 발표 내용",    width: "w-56" },
-  { key: "discussionPoints", label: "주요 논의 포인트",  width: "w-56" },
-  { key: "risks",            label: "리스크 및 검토 사항", width: "w-48" },
+const DISC_COLS: { key: keyof DiscussionItem; label: string; width: string; rows: number }[] = [
+  { key: "agenda",           label: "안건",              width: "w-40",  rows: 4 },
+  { key: "relatedDept",      label: "관련 부서",          width: "w-32",  rows: 4 },
+  { key: "keyContent",       label: "핵심 발표 내용",     width: "w-72",  rows: 8 },
+  { key: "discussionPoints", label: "주요 논의 포인트",   width: "w-56",  rows: 5 },
+  { key: "risks",            label: "리스크 및 검토 사항", width: "w-52",  rows: 5 },
 ];
 
 function DetailPage({
@@ -1254,8 +1254,9 @@ function DetailPage({
                           <textarea
                             value={item[c.key]}
                             onChange={(e) => setCell(i, c.key, e.target.value)}
-                            rows={2}
-                            className="w-full resize-none text-[12px] text-gray-700 leading-relaxed focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1 py-0.5 bg-transparent hover:bg-indigo-50/30 transition"
+                            rows={c.rows}
+                            className="w-full resize-y text-[12px] text-gray-700 leading-relaxed focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1 py-0.5 bg-transparent hover:bg-indigo-50/30 transition"
+                            style={c.key === "keyContent" ? { overflowY: "hidden" } : {}}
                           />
                         </td>
                       ))}
