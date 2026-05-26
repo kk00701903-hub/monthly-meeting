@@ -807,6 +807,9 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
           ? `${p.team} 발표드리겠습니다.`
           : `${p.team || p.dept || ""} 발표해 주시기 바랍니다.`}
         </p>
+        {p.team === "정보전략팀" && (
+          <p className="text-gray-500 pl-3">(발표 후) 이상으로 보고 마치겠습니다. 질문있으신 분들께서는 질문해 주시기 바랍니다.</p>
+        )}
         {p.topic && (
           <p className="text-[14px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
