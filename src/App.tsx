@@ -66,7 +66,7 @@ const DEFAULT_DATA: MeetingData = {
     planningTeam: "경영기획팀에서 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.",
     closing: "각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다.",
     finalReport: "대표님, 금일 발표는 다 끝났습니다.",
-    ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
+    ending: "이상으로",
   },
   presentations: [
     {
@@ -837,7 +837,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
         <p>
           ○ 대표님 맺음말{" "}
           <span className="text-gray-400 italic ml-1">[발언 후]</span>
-          {" "}→ <E value={month} onChange={set("month")} w="28px" />월 {scripts.ending}{" "}
+          {" "}→ {scripts.ending} <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 마치겠습니다.{" "}
           <span className="text-gray-400 italic">[상호 인사]</span>
         </p>
       ),
