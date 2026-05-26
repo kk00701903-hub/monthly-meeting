@@ -459,14 +459,21 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
           <h2 className="text-lg font-bold text-gray-900">회의 설정</h2>
           <p className="text-xs text-gray-400 mt-0.5">회의 기본 정보와 각 본부별 발표 시간 / 발표자를 설정합니다</p>
         </div>
-        <button
-          onClick={handleSave}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${
-            saved ? "bg-emerald-500 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white"
-          }`}
-        >
-          {saved ? "✓ 저장됨" : "저장하기"}
-        </button>
+        <div className="flex items-center gap-3">
+          {saved && (
+            <p className="text-xs text-emerald-600 font-medium hidden sm:block">
+              ✓ 저장 완료! 사이드바 <strong>[진행자 멘트]</strong>에서 최종 스크립트를 확인하세요.
+            </p>
+          )}
+          <button
+            onClick={handleSave}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${
+              saved ? "bg-emerald-500 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            }`}
+          >
+            {saved ? "✓ 저장됨" : "저장하기"}
+          </button>
+        </div>
       </div>
 
       <div className="px-8 py-6 max-w-4xl space-y-6">
@@ -849,21 +856,35 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
 
       {/* 범례 */}
       <div className="px-6 py-1.5 no-print">
-        <div className="flex flex-wrap gap-3 text-[11px] text-gray-400 items-center">
-          <span className="flex items-center gap-1">
+        <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-gray-400 items-center">
+          <span className="flex items-center gap-1.5">
             <span className="inline-block w-2.5 h-2.5 rounded bg-yellow-100 border border-yellow-300" />
-            수정 가능 항목
+            노란 박스 = 클릭하여 직접 수정
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2.5 h-2.5 rounded bg-indigo-100 border border-indigo-300" />
+            담당/팀 셀 클릭 = 세부 토의 안건 페이지로 이동
+          </span>
+          <span className="flex items-center gap-1.5">
             <span className="inline-block w-2.5 h-2.5 rounded bg-blue-100 border border-blue-200" />
-            발표 주제
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="inline-block w-2.5 h-2.5 rounded bg-indigo-50 border border-indigo-200" />
-            오프닝 / 클로징
+            요약 셀 = 클릭하여 회의 내용 직접 입력
           </span>
         </div>
       </div>
+
+      {/* 빈 일정 안내 배너 */}
+      {presentations.length === 0 && (
+        <div className="mx-6 mb-2 no-print bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 flex gap-3 items-start">
+          <span className="text-xl mt-0.5 flex-shrink-0">📌</span>
+          <div>
+            <p className="text-sm font-semibold text-amber-800 mb-1">발표 일정이 없습니다</p>
+            <p className="text-xs text-amber-700 leading-relaxed">
+              사이드바 <strong>[AI 일정 추출]</strong>에서 회의 시간표 이미지를 업로드하거나,{" "}
+              <strong>[회의 설정]</strong>에서 직접 발표자를 추가하세요.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* 메인 테이블 */}
       <div className="px-6 pb-8">
@@ -1016,6 +1037,7 @@ function DetailPage({
   onUpdate: (items: DiscussionItem[]) => void;
 }) {
   const [items, setItems] = useState<DiscussionItem[]>(pres.discussion ?? []);
+  const [toast, setToast] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const setCell = (i: number, key: keyof DiscussionItem, val: string) => {
@@ -1033,6 +1055,8 @@ function DetailPage({
 
   const handleSave = () => {
     onUpdate(items);
+    setToast(true);
+    setTimeout(() => setToast(false), 2000);
   };
 
   const handleExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1075,13 +1099,19 @@ function DetailPage({
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-100">
+      {/* 저장 토스트 */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2 pointer-events-none">
+          ✓ 저장되었습니다
+        </div>
+      )}
       {/* 헤더 */}
       <header className="no-print text-white shadow-md"
         style={{ background: "linear-gradient(90deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%)", borderBottom: "1px solid rgba(139,92,246,0.25)" }}>
         <div className="px-6 py-3 flex items-center gap-4">
           <button onClick={() => { handleSave(); onBack(); }}
-            className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition">
-            ← 뒤로
+            className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition whitespace-nowrap">
+            ← 진행자 멘트로 돌아가기 (자동 저장)
           </button>
           <div className="w-px h-5 bg-white/20" />
           <div>
@@ -1215,9 +1245,9 @@ export default function App() {
   }, []);
 
   const navItems: { id: Page; icon: string; label: string; sub: string }[] = [
-    { id: "script", icon: "📋", label: "진행자 멘트", sub: "회의 진행 스크립트" },
-    { id: "ai", icon: "✨", label: "AI 일정 추출", sub: "이미지에서 자동 인식" },
-    { id: "master", icon: "⚙️", label: "회의 설정", sub: "발표자 · 시간 · 주제" },
+    { id: "script", icon: "📋", label: "진행자 멘트",  sub: "회의 당일 진행 스크립트 확인·출력" },
+    { id: "ai",     icon: "✨", label: "AI 일정 추출", sub: "회의 시간표 이미지 → 자동 일정 생성" },
+    { id: "master", icon: "⚙️", label: "회의 설정",    sub: "발표자·시간·주제·멘트 문구 관리" },
   ];
 
   return (
@@ -1253,6 +1283,13 @@ export default function App() {
 
         {/* 메뉴 */}
         <nav className="flex-1 py-4 space-y-1 px-2">
+          {sidebarOpen && (
+            <div className="mx-0.5 mb-3 px-3 py-2 rounded-lg text-[10px]"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <p className="font-semibold mb-1" style={{ color: "rgba(148,163,184,0.5)" }}>사용 순서</p>
+              <p style={{ color: "rgba(167,139,250,0.8)" }}>✨ AI 추출 → ⚙️ 회의 설정 → 📋 출력</p>
+            </div>
+          )}
           {navItems.map((item) => (
             <button
               key={item.id}
