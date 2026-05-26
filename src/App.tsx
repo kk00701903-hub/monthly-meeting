@@ -189,13 +189,13 @@ function Notes({ text }: { text: string }) {
     <div className="mt-2 no-print">
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center gap-1 text-[10px] font-medium text-slate-500 hover:text-slate-700 transition-colors"
+        className="flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-700 transition-colors"
       >
         <span className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}>▶</span>
         추가 검토사항
       </button>
       {open && (
-        <div className="mt-1.5 text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap rounded-lg border-l-2 border-amber-400 bg-amber-50 px-3 py-2">
+        <div className="mt-1.5 text-[12px] text-slate-600 leading-relaxed whitespace-pre-wrap rounded-lg border-l-2 border-amber-400 bg-amber-50 px-3 py-2">
           {text}
         </div>
       )}
@@ -387,7 +387,7 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
                 저장
               </button>
             </div>
-            <p className="text-[11px] text-gray-400">
+            <p className="text-[12px] text-gray-400">
               🔒 API Key는 이 브라우저에만 저장됩니다.{" "}
               <a href="https://console.anthropic.com/" target="_blank" rel="noreferrer" className="text-violet-500 underline">
                 Anthropic Console
@@ -462,7 +462,7 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
                 {(aiResult.presentations || []).map((p, i) => (
                   <div key={i} className="bg-white rounded-lg border border-emerald-100 px-4 py-3 text-xs">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-gray-500 text-[11px]">{p.from} – {p.to}</span>
+                      <span className="font-mono text-gray-500 text-[12px]">{p.from} – {p.to}</span>
                       <span className="text-gray-300">|</span>
                       {p.team && <span className="text-gray-600 font-medium">{p.team}</span>}
                       {p.presenter && <span className="text-gray-400"> ({p.presenter})</span>}
@@ -786,7 +786,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
         span[contenteditable] { border: none !important; background: #fef9c3 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
         /* 페이지 설정 */
-        body { font-size: 10px; margin: 0; padding: 0; }
+        body { font-size: 11px; margin: 0; padding: 0; }
         tr { page-break-inside: avoid; }
         table { page-break-inside: auto; }
       }
@@ -808,19 +808,19 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
           : `${p.team || p.dept || ""} 발표해 주시기 바랍니다.`}
         </p>
         {p.topic && (
-          <p className="text-[13px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
+          <p className="text-[14px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
         {(p.discussion?.length ?? 0) > 0 && (
           <div className="pl-3 mt-1.5 space-y-1">
             <button
               onClick={(e) => { e.stopPropagation(); onOpenModal(i); }}
-              className="text-[13px] text-violet-600 font-semibold hover:text-violet-800 hover:underline transition-colors"
+              className="text-[14px] text-violet-600 font-semibold hover:text-violet-800 hover:underline transition-colors"
             >
               📋 토의 안건 {p.discussion.length}건 →
             </button>
             <ul className="pl-1 space-y-0.5">
               {p.discussion.map((d, di) => (
-                <li key={di} className="text-[13px] text-gray-500 flex items-start gap-1">
+                <li key={di} className="text-[14px] text-gray-500 flex items-start gap-1">
                   <span className="text-gray-300 flex-shrink-0 mt-0.5">·</span>
                   <span className="leading-snug">{d.agenda}</span>
                 </li>
@@ -899,16 +899,16 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
               <span className="text-sm">📋</span>
             </div>
           <div>
-              <h1 className="text-[13px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트</h1>
-              <p className="text-[11px] mt-0.5" style={{ color: "rgba(167,139,250,0.7)" }}>
-                <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1">노란색 항목</span>
+              <h1 className="text-[14px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트</h1>
+              <p className="text-[12px] mt-0.5" style={{ color: "rgba(167,139,250,0.7)" }}>
+                <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[11px] font-bold mr-1">노란색 항목</span>
                 클릭하여 수정 가능
               </p>
             </div>
           </div>
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[11px] font-semibold transition shadow-sm"
+            className="no-print flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[12px] font-semibold transition shadow-sm"
             style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "#e2e8f0" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
@@ -922,7 +922,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
       {!isOnline && (
         <div className="no-print bg-amber-500 border-b border-amber-600 px-6 py-2 flex items-center gap-2">
           <span className="text-amber-900 text-sm">⚠️</span>
-          <p className="text-[11px] text-amber-900 font-medium">
+          <p className="text-[12px] text-amber-900 font-medium">
             오프라인 모드 — 마지막 저장된 데이터를 표시 중입니다. 변경사항은 로컬에 저장됩니다.
           </p>
         </div>
@@ -931,21 +931,21 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
       {/* 회의 기본정보 카드 */}
       <div className="px-6 pt-4 pb-2">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-3 flex flex-wrap gap-x-6 gap-y-2 items-center">
-          <div className="flex items-center gap-1.5 text-[13px]">
+          <div className="flex items-center gap-1.5 text-[14px]">
             <span className="text-gray-500 font-medium">📅 회의명</span>
             <E value={month} onChange={set("month")} w="28px" />
             <span className="text-gray-700">월 업무혁신회의</span>
           </div>
-          <div className="flex items-center gap-1.5 text-[13px]">
+          <div className="flex items-center gap-1.5 text-[14px]">
             <span className="text-gray-500 font-medium">🗓 일자</span>
             <E value={meetingDate} onChange={set("meetingDate")} w="110px" />
           </div>
-          <div className="flex items-center gap-1.5 text-[13px]">
+          <div className="flex items-center gap-1.5 text-[14px]">
             <span className="text-gray-500 font-medium">⏰ 종료예정</span>
             <E value={endTime} onChange={set("endTime")} w="24px" />
             <span className="text-gray-700">시</span>
           </div>
-          <div className="ml-auto text-[11px] text-gray-400 no-print italic hidden md:block">
+          <div className="ml-auto text-[12px] text-gray-400 no-print italic hidden md:block">
             ※ 사전에 각 부서별 질문사항 미리 확인 후 통화 (회의자료 확인)
           </div>
         </div>
@@ -953,7 +953,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
 
       {/* 범례 */}
       <div className="px-6 py-1.5 no-print">
-        <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-gray-400 items-center">
+        <div className="flex flex-wrap gap-x-5 gap-y-1 text-[12px] text-gray-400 items-center">
           <span className="flex items-center gap-1.5">
             <span className="inline-block w-2.5 h-2.5 rounded bg-yellow-100 border border-yellow-300" />
             노란 박스 = 클릭하여 직접 수정
@@ -990,7 +990,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
             <table className="w-full border-collapse min-w-[700px]" style={{ borderColor: "#b0b8c4" }}>
               <thead>
                 {/* 1행: 대분류 헤더 */}
-                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[13px]">
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[14px]">
                   <th
                     rowSpan={2}
                     className="border border-white/20 px-4 py-2.5 font-bold text-center w-28 whitespace-nowrap tracking-widest"
@@ -1021,7 +1021,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                   </th>
                 </tr>
                 {/* 2행: 소분류 헤더 */}
-                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[12px]">
+                <tr style={{ backgroundColor: hdrColor }} className="text-white text-[13px]">
                   <th className="border border-white/20 px-3 py-2 font-semibold text-center w-24 whitespace-nowrap tracking-wider">담 당</th>
                   <th className="border border-white/20 px-3 py-2 font-semibold text-center w-36 whitespace-nowrap tracking-wider">팀 / 발표자</th>
                 </tr>
@@ -1040,7 +1040,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                       className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
                   >
                       {/* 시간 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[13px] text-gray-700 whitespace-nowrap align-middle"
+                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[14px] text-gray-700 whitespace-nowrap align-middle"
                         style={isLast ? { fontWeight: 800 } : {}}>
                         <span style={isLast ? { textDecoration: "underline" } : {}}>
                       {row.from}
@@ -1052,34 +1052,34 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                     </td>
                       {/* 담당 */}
                       <td
-                        className={`border border-gray-300 px-3 py-3 text-center text-[13px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
+                        className={`border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
                         onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenModal(row.presIdx!) : undefined}
                         title={row.hasDetail ? "클릭하여 세부 토의 안건 보기" : undefined}
                       >
                         {row.dept || row.label}
                         {row.hasDetail && (
-                          <span className="block text-[10px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="block text-[11px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                             세부보기 →
                       </span>
                         )}
                     </td>
                       {/* 팀/발표자 */}
                       <td
-                        className={`border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 transition-colors" : ""}`}
+                        className={`border border-gray-300 px-3 py-3 text-center text-[14px] text-gray-600 align-middle leading-snug ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 transition-colors" : ""}`}
                         onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenModal(row.presIdx!) : undefined}
                       >
                         <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
                         {row.presenter && row.presenter !== row.label && (
-                          <div className="text-gray-500 text-[13px] mt-0.5">({row.presenter})</div>
+                          <div className="text-gray-500 text-[14px] mt-0.5">({row.presenter})</div>
                         )}
                     </td>
                       {/* 발표내용 + 진행자 멘트 */}
-                      <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-800 align-top leading-relaxed">
+                      <td className="border border-gray-300 px-4 py-3 text-[14px] text-gray-800 align-top leading-relaxed">
                       {row.script}
                       <Notes text={row.notes} />
                     </td>
                       {/* 회의내용 요약 */}
-                      <td className="no-print border border-gray-300 px-4 py-3 text-[13px] text-gray-700 align-top leading-relaxed">
+                      <td className="no-print border border-gray-300 px-4 py-3 text-[14px] text-gray-700 align-top leading-relaxed">
                         {(row.presIdx !== undefined || row.onSummaryChange) ? (
                           <span
                             contentEditable
@@ -1107,7 +1107,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
             </table>
           </div>
         </div>
-        <p className="mt-3 text-center text-[11px] text-gray-400 no-print">
+        <p className="mt-3 text-center text-[12px] text-gray-400 no-print">
           인쇄 시 추가 검토사항은 숨겨집니다. 브라우저 인쇄 설정에서 "배경 그래픽 포함"을 체크하면 색상이 유지됩니다.
         </p>
       </div>
@@ -1212,8 +1212,8 @@ function DetailPage({
           </button>
           <div className="w-px h-5 bg-white/20" />
           <div>
-            <p className="text-[11px] text-indigo-300 font-medium">{pres.dept} · {pres.team} ({pres.presenter})</p>
-            <h1 className="text-[14px] font-bold text-white truncate max-w-xl">{pres.topic}</h1>
+            <p className="text-[12px] text-indigo-300 font-medium">{pres.dept} · {pres.team} ({pres.presenter})</p>
+            <h1 className="text-[15px] font-bold text-white truncate max-w-xl">{pres.topic}</h1>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <button onClick={handleDownloadTemplate}
@@ -1244,10 +1244,10 @@ function DetailPage({
           </div>
 
           <div className="overflow-auto flex-1">
-            <table className="w-full border-collapse text-[13px]">
+            <table className="w-full border-collapse text-[14px]">
               <thead>
                 <tr className="bg-gray-700 text-white">
-                  <th className="border border-gray-600 px-3 py-2.5 text-center font-semibold w-8 text-[11px]">#</th>
+                  <th className="border border-gray-600 px-3 py-2.5 text-center font-semibold w-8 text-[12px]">#</th>
                   {DISC_COLS.map((c) => (
                     <th key={c.key} className={`border border-gray-600 px-3 py-2.5 text-left font-semibold ${c.width}`}>{c.label}</th>
                   ))}
@@ -1265,14 +1265,14 @@ function DetailPage({
                 ) : (
                   items.map((item, i) => (
                     <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                      <td className="border border-gray-200 px-2 py-2 text-center text-[11px] text-gray-400 font-mono">{i + 1}</td>
+                      <td className="border border-gray-200 px-2 py-2 text-center text-[12px] text-gray-400 font-mono">{i + 1}</td>
                       {DISC_COLS.map((c) => (
                         <td key={c.key} className="border border-gray-200 px-2 py-1.5 align-top">
                           <textarea
                             value={item[c.key]}
                             onChange={(e) => setCell(i, c.key, e.target.value)}
                             rows={c.rows}
-                            className="w-full resize-y text-[12px] text-gray-700 leading-relaxed focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1 py-0.5 bg-transparent hover:bg-indigo-50/30 transition"
+                            className="w-full resize-y text-[13px] text-gray-700 leading-relaxed focus:outline-none focus:ring-1 focus:ring-indigo-400 rounded px-1 py-0.5 bg-transparent hover:bg-indigo-50/30 transition"
                             style={c.key === "keyContent" ? { overflowY: "hidden" } : {}}
                           />
                         </td>
@@ -1364,14 +1364,14 @@ export default function App() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 mb-0.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shadow" style={{ boxShadow: "0 0 6px #a78bfa" }} />
-                <p className="text-[11px] font-bold text-white tracking-wide truncate">업무혁신회의</p>
+                <p className="text-[12px] font-bold text-white tracking-wide truncate">업무혁신회의</p>
               </div>
-              <p className="text-[10px] truncate" style={{ color: "rgba(167,139,250,0.6)" }}>{data.meetingDate}</p>
+              <p className="text-[11px] truncate" style={{ color: "rgba(167,139,250,0.6)" }}>{data.meetingDate}</p>
             </div>
           )}
           <button
             onClick={() => setSidebarOpen((p) => !p)}
-            className="transition p-1 rounded-lg text-[10px]"
+            className="transition p-1 rounded-lg text-[11px]"
             style={{ color: "rgba(148,163,184,0.6)" }}
             title={sidebarOpen ? "사이드바 닫기" : "사이드바 열기"}
           >
@@ -1382,7 +1382,7 @@ export default function App() {
         {/* 메뉴 */}
         <nav className="flex-1 py-4 space-y-1 px-2">
           {sidebarOpen && (
-            <div className="mx-0.5 mb-3 px-3 py-2 rounded-lg text-[10px]"
+            <div className="mx-0.5 mb-3 px-3 py-2 rounded-lg text-[11px]"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
               <p className="font-semibold mb-1" style={{ color: "rgba(148,163,184,0.5)" }}>사용 순서</p>
               <p style={{ color: "rgba(167,139,250,0.8)" }}>✨ AI 추출 → ⚙️ 회의 설정 → 📋 출력</p>
@@ -1420,8 +1420,8 @@ export default function App() {
               <span className="text-sm flex-shrink-0">{item.icon}</span>
               {sidebarOpen && (
                 <div className="min-w-0">
-                  <p className="text-[12px] font-semibold leading-tight">{item.label}</p>
-                  <p className="text-[10px] leading-tight mt-0.5" style={{ color: page === item.id ? "rgba(167,139,250,0.7)" : "rgba(100,116,139,0.8)" }}>
+                  <p className="text-[13px] font-semibold leading-tight">{item.label}</p>
+                  <p className="text-[11px] leading-tight mt-0.5" style={{ color: page === item.id ? "rgba(167,139,250,0.7)" : "rgba(100,116,139,0.8)" }}>
                     {item.sub}
         </p>
       </div>
@@ -1436,13 +1436,13 @@ export default function App() {
         {/* 하단 배지 */}
         {sidebarOpen && (
           <div className="px-4 py-3 space-y-2" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-            <p className="text-[10px] leading-relaxed" style={{ color: "rgba(100,116,139,0.8)" }}>
+            <p className="text-[11px] leading-relaxed" style={{ color: "rgba(100,116,139,0.8)" }}>
               {data.month}월 회의 &middot; 종료 {data.endTime}시
             </p>
             <div className="flex items-center gap-1.5">
               <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? "bg-emerald-400" : "bg-red-400"}`}
                 style={{ boxShadow: isOnline ? "0 0 6px #34d399" : "0 0 6px #f87171" }} />
-              <span className="text-[10px]" style={{ color: isOnline ? "rgba(52,211,153,0.9)" : "rgba(248,113,113,0.9)" }}>
+              <span className="text-[11px]" style={{ color: isOnline ? "rgba(52,211,153,0.9)" : "rgba(248,113,113,0.9)" }}>
                 {isOnline ? "온라인" : "오프라인"}
               </span>
             </div>
