@@ -780,7 +780,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
             </button>
             <ul className="pl-1 space-y-0.5">
               {p.discussion.map((d, di) => (
-                <li key={di} className="text-[11px] text-gray-500 flex items-start gap-1">
+                <li key={di} className="text-[13px] text-gray-500 flex items-start gap-1">
                   <span className="text-gray-300 flex-shrink-0 mt-0.5">·</span>
                   <span className="leading-snug">{d.agenda}</span>
                 </li>
