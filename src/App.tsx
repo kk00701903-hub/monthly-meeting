@@ -251,7 +251,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; presenter: string; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; presenter: string; topic?: string; script: React.ReactNode; notes: string; bg?: string };
 
   const rows: RowItem[] = [
     {
@@ -275,7 +275,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "",
     },
     {
-      from: yeongUp.from, to: yeongUp.to, label: "영업본부", presenter: `${yeongUp.presenter} / ${yeongUp.team}`,
+      from: yeongUp.from, to: yeongUp.to, label: "영업본부", presenter: `${yeongUp.presenter} / ${yeongUp.team}`, topic: yeongUp.topic,
       script: (
         <div className="space-y-1">
           <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
@@ -285,7 +285,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 당사 일마감 프로젝트 수행 시 매출정산 유형이 30가지, 세분화하면 80가지 이상이어서 어려움이 있음. 전사 투명하고 표준화된 관리를 위한 PI 시도로 판단됨.\n○ 현재 많은 회사들이 영업효율화 및 전략수립을 위해 견적자동화 솔루션을 도입하고 있음(부릉-한국야쿠르트 등). 데이터기반 견적생성, 견적템플릿 관리, 실시간 단가 업데이트, 승인워크플로우 자동화 등.",
     },
     {
-      from: gyeongIn1.from, to: gyeongIn1.to, label: "경인사업1본부", presenter: `${gyeongIn1.presenter} / ${gyeongIn1.team}`,
+      from: gyeongIn1.from, to: gyeongIn1.to, label: "경인사업1본부", presenter: `${gyeongIn1.presenter} / ${gyeongIn1.team}`, topic: gyeongIn1.topic,
       script: (
         <div className="space-y-1">
           <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
@@ -295,7 +295,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 사내 AI 교육 6/12일, 사내 지식경영을 통해 교육 게시물 업데이트 중.\n○ 7/22 영업본부 워크샵 시 영업부문 경진대회, 올해 하반기 전사 경진대회 검토.\n→ 사내 AI 활용 수준이 높고 상당히 고무적임.\n○ 회사 볼륨이 커질수록 IT 요구사항 증가. AI를 통해 충분히 사용성을 검토 후 개발요청 시 업무효율 증가 예상.",
     },
     {
-      from: gyeongIn2.from, to: gyeongIn2.to, label: "경인사업2본부", presenter: `${gyeongIn2.presenter} / ${gyeongIn2.team}`,
+      from: gyeongIn2.from, to: gyeongIn2.to, label: "경인사업2본부", presenter: `${gyeongIn2.presenter} / ${gyeongIn2.team}`, topic: gyeongIn2.topic,
       script: (
         <div className="space-y-1">
           <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
@@ -305,7 +305,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ AI 활용을 위한 좋은 시도로 생각됨.\n○ 기업의 AI 활용에 대한 보안/윤리적 제한에 대해서도 고민 필요.\n○ 전표 등 민감정보에 대해서는 유관부서와 사전 공유 및 IT 부서의 가이드라인을 따르는 것이 중요할 것으로 판단됨.",
     },
     {
-      from: yeongNam.from, to: yeongNam.to, label: "영남사업본부", presenter: `${yeongNam.presenter} / ${yeongNam.team}`,
+      from: yeongNam.from, to: yeongNam.to, label: "영남사업본부", presenter: `${yeongNam.presenter} / ${yeongNam.team}`, topic: yeongNam.topic,
       script: (
         <div className="space-y-1">
           <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
@@ -315,7 +315,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "",
     },
     {
-      from: jungNam.from, to: jungNam.to, label: "중남사업본부", presenter: `${jungNam.presenter} / ${jungNam.team}`,
+      from: jungNam.from, to: jungNam.to, label: "중남사업본부", presenter: `${jungNam.presenter} / ${jungNam.team}`, topic: jungNam.topic,
       script: (
         <div className="space-y-1">
           <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
@@ -325,7 +325,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
       notes: "○ 중남사업부는 차량당 배송 커버지역이 넓어 운행거리가 많음. 배송 거래처 증가 시 노선 수 조정 관련 배송기사 반발 여부 확인 필요.\n○ 대리점 도착시간에 문제가 없는지?",
     },
     {
-      from: jegwa.from, to: jegwa.to, label: "제과사업부", presenter: `${jegwa.presenter} / ${jegwa.team}`,
+      from: jegwa.from, to: jegwa.to, label: "제과사업부", presenter: `${jegwa.presenter} / ${jegwa.team}`, topic: jegwa.topic,
       script: (
         <div className="space-y-1">
           <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
@@ -433,6 +433,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                   <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-16 whitespace-nowrap">To</th>
                   <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-28 whitespace-nowrap">구분</th>
                   <th className="px-3 py-3 font-semibold text-center border-r border-indigo-700 w-36 whitespace-nowrap">담당 / 발표자</th>
+                  <th className="px-3 py-3 font-semibold text-left border-r border-indigo-700 w-52">회의 주제</th>
                   <th className="px-3 py-3 font-semibold text-left border-r border-indigo-700">진행자 멘트</th>
                   <th className="px-3 py-3 font-semibold text-center whitespace-nowrap no-print w-32">추가 검토사항</th>
                 </tr>
@@ -452,6 +453,11 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
                       </span>
                     </td>
                     <td className={`${tdBase} text-xs text-gray-600 border-r border-gray-200`}>{row.presenter}</td>
+                    <td className={`${tdBase} text-xs border-r border-gray-200`}>
+                      {row.topic
+                        ? <span className="text-blue-700 font-medium leading-snug">{row.topic}</span>
+                        : <span className="text-gray-300">—</span>}
+                    </td>
                     <td className={`${tdBase} text-gray-800`}>{row.script}</td>
                     <td className={`${tdBase} no-print`}><Notes text={row.notes} /></td>
                   </tr>
