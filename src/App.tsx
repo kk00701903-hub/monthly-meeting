@@ -841,7 +841,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
       script: (
         <div className="space-y-1.5">
           <p>○ <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 시작하겠습니다.{" "}
-            <span className="text-gray-400 italic">상호간에 인사</span></p>
+            <span className="text-gray-400 italic">상호간의 인사</span></p>
           <p className="text-gray-500">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
           <p>○ {scripts.videoIntro} 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
@@ -878,7 +878,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
           ○ 대표님 맺음말{" "}
           <span className="text-gray-400 italic ml-1">[발언 후]</span>
           {" "}→ 이상으로 <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 마치겠습니다.{" "}
-          <span className="text-gray-400 italic">상호간에 인사</span>
+          <span className="text-gray-400 italic">상호간의 인사</span>
         </p>
       ),
       notes: "",
