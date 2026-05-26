@@ -702,7 +702,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">발표자</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-32">소속팀</th>
                     <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표주제</th>
-                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">회의내용요약</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표자료 요약</th>
                     <th className="border border-gray-200 px-2 py-2 w-8"></th>
                   </tr>
                 </thead>
@@ -1021,7 +1021,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                     className="no-print border border-white/20 px-4 py-2.5 font-bold text-center w-80 tracking-widest"
                     style={{ letterSpacing: "0.1em" }}
                   >
-                    회의내용 요약
+                    발표자료 요약
                   </th>
                 </tr>
                 {/* 2행: 소분류 헤더 */}
@@ -1082,7 +1082,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                       {row.script}
                       <Notes text={row.notes} />
                     </td>
-                      {/* 회의내용 요약 */}
+                      {/* 발표자료 요약 */}
                       <td className="no-print border border-gray-300 px-4 py-3 text-[14px] text-gray-700 align-top leading-relaxed">
                         {(row.presIdx !== undefined || row.onSummaryChange) ? (
                           <span
