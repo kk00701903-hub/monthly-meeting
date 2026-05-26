@@ -12,6 +12,16 @@ type SectionData = {
   summary: string;
 };
 
+type ScriptTexts = {
+  opening: string;
+  videoIntro: string;
+  videoReason: string;
+  planningTeam: string;
+  closing: string;
+  finalReport: string;
+  ending: string;
+};
+
 type MeetingData = {
   month: string;
   meetingDate: string;
@@ -19,6 +29,7 @@ type MeetingData = {
   videoTitle: string;
   videoSelector: string;
   videoReason: string;
+  scripts: ScriptTexts;
   yeongUp: SectionData;
   gyeongIn1: SectionData;
   gyeongIn2: SectionData;
@@ -38,6 +49,15 @@ const DEFAULT_DATA: MeetingData = {
   videoTitle: "물류산업종사자만 78만명, 로봇은 정말 인간의 일자리를 뺏어갈까?",
   videoSelector: "인사총무팀",
   videoReason: "AI 및 자동화 기술이 물류 현장에 미치는 영향을 함께 고민하고자 선정하였습니다",
+  scripts: {
+    opening: "월 업무혁신회의를 시작하겠습니다.",
+    videoIntro: "다음으로 동영상 시청이 있겠습니다. 금일 동영상은",
+    videoReason: "이번 동영상은",
+    planningTeam: "경영기획팀에서 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.",
+    closing: "각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다.",
+    finalReport: "대표님, 금일 발표는 다 끝났습니다.",
+    ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
+  },
   yeongUp: { from: "9:15", to: "9:30", presenter: "최배성본부장", team: "영업지원팀", topic: "3PL 표준요율 단가정립을 통한 견적업무 합리화", summary: "" },
   gyeongIn1: { from: "9:30", to: "9:45", presenter: "마영기상무", team: "유통사업3팀", topic: "입고 명세서 통일화 테스트 상황 및 향후 과제", summary: "" },
   gyeongIn2: { from: "9:45", to: "10:00", presenter: "안영준본부장", team: "경인사업2팀", topic: "AI 활용사례 : 전표처리 자동화", summary: "" },
@@ -565,6 +585,86 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
           </div>
         </section>
 
+        {/* 진행자 멘트 */}
+        <section className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-purple-50 border-b border-purple-100 px-6 py-3 flex items-center gap-2">
+            <span className="text-purple-600 text-base">💬</span>
+            <h3 className="font-semibold text-purple-900 text-sm">진행자 멘트</h3>
+          </div>
+          <div className="p-6 space-y-4">
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">오프닝 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.opening}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, opening: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 월 업무혁신회의를 시작하겠습니다."
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">동영상 소개</label>
+              <input
+                type="text"
+                value={local.scripts.videoIntro}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, videoIntro: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 다음으로 동영상 시청이 있겠습니다. 금일 동영상은"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">동영상 선정 사유 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.videoReason}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, videoReason: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 이번 동영상은"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">경영기획팀 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.planningTeam}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, planningTeam: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 경영기획팀에서 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다."
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">전체 공유 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.closing}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, closing: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다."
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">대표님 보고 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.finalReport}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, finalReport: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 대표님, 금일 발표는 다 끝났습니다."
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">마무리 멘트</label>
+              <input
+                type="text"
+                value={local.scripts.ending}
+                onChange={(e) => setLocal((p) => ({ ...p, scripts: { ...p.scripts, ending: e.target.value } }))}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+                placeholder="예: 이상으로 월 업무혁신회의를 마치겠습니다."
+              />
+            </div>
+          </div>
+        </section>
+
         {/* 고정 일정 */}
         <section className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="bg-gray-50 border-b border-gray-100 px-6 py-3 flex items-center gap-2">
@@ -637,7 +737,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
    멘트 시트 화면
 ─────────────────────────────────────────── */
 function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean }) {
-  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
+  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
   const setSection = (key: keyof MeetingData, field: keyof SectionData) => (v: string) =>
@@ -668,13 +768,13 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
       from: "9:00", to: "9:08", label: "동영상 시청", dept: "", presenter: videoSelector, bg: "bg-slate-50",
       script: (
         <div className="space-y-1.5">
-          <p>○ <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 시작하겠습니다.{" "}
+          <p>○ <E value={month} onChange={set("month")} w="28px" />월 {scripts.opening}{" "}
             <span className="text-gray-400 italic text-[11px]">[상호 인사]</span></p>
           <p className="text-gray-500 text-[11px]">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
-          <p>○ 다음으로 동영상 시청이 있겠습니다. 금일 동영상은 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
+          <p>○ {scripts.videoIntro} 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
           <p className="text-gray-500 text-[11px]">
-            : 이번 동영상은{" "}
+            : {scripts.videoReason}{" "}
             <E value={videoSelector} onChange={set("videoSelector")} w="80px" />에서 선정한 동영상으로,{" "}
             <E value={videoReason} onChange={set("videoReason")} w="260px" />
           </p>
@@ -684,7 +784,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
     },
     {
       from: "9:08", to: "9:15", label: "기획담당", dept: "기획담당", presenter: "경영기획팀",
-      script: <p>○ 경영기획팀에서 <E value={month} onChange={set("month")} w="28px" />월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.</p>,
+      script: <p>○ {scripts.planningTeam.replace("월", `${month}월`)}</p>,
       notes: "",
     },
     {
@@ -749,12 +849,12 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
     },
     {
       from: "10:40", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
-      script: <p>○ 각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다.</p>,
+      script: <p>○ {scripts.closing}</p>,
       notes: "",
     },
     {
       from: "10:50", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행",
-      script: <p className="font-semibold text-gray-700">○ 대표님, 금일 발표는 다 끝났습니다.</p>,
+      script: <p className="font-semibold text-gray-700">○ {scripts.finalReport}</p>,
       notes: "",
     },
     {
@@ -763,7 +863,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
         <p>
           ○ 대표님 맺음말{" "}
           <span className="text-gray-400 italic text-[11px] ml-1">[발언 후]</span>
-          {" "}→ 이상으로 <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 마치겠습니다.{" "}
+          {" "}→ <E value={month} onChange={set("month")} w="28px" />월 {scripts.ending}{" "}
           <span className="text-gray-400 italic text-[11px]">[상호 인사]</span>
         </p>
       ),
