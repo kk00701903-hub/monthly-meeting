@@ -79,7 +79,48 @@ const DEFAULT_DATA: MeetingData = {
         { agenda: "수요 예측 기반 재고 및 매입 단가 관리", relatedDept: "물류기획팀, 구매팀", keyContent: "할인 월별 주유량 분석, 가동률·계절별 물동량 데이터 공유, 최적 매입 시점 조정", discussionPoints: "재고 부족 및 과잉 예방, 본사 예측 데이터와 매입 연계 강화", risks: "재고 관리 실패로 인한 비용 증가 및 공급 차질 위험" },
       ],
     },
-    { from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",  topic: "이커머스 사업 구축 전략", summary: "상품 판매 전략을 기존 고객사 중심의 판매를 넘어 인터넷 기반의 불특정 다수 고객 대상으로 확대함으로써 판매채널 다변화를 추진\n가. 사전 검토 사항 (구축사항)\n나. 향후 운영 전략 (상품군, 플랫폼 등)", discussion: [] },
+    {
+      from: "9:50", to: "10:15", dept: "영업담당", presenter: "신두삼 팀장", team: "영업지원팀",
+      topic: "이커머스 사업 구축 전략",
+      summary: "상품 판매 전략을 기존 고객사 중심의 판매를 넘어 인터넷 기반의 불특정 다수 고객 대상으로 확대함으로써 판매채널 다변화를 추진\n가. 사전 검토 사항 (구축사항)\n나. 향후 운영 전략 (상품군, 플랫폼 등)",
+      discussion: [
+        {
+          agenda: "초기 상품 구성 및 체화재고 활용 방안",
+          relatedDept: "영업, 구매, 물류운영",
+          keyContent: "PB상품 2종, 범용상품 8종(총 10종 내외) 품목 확정 및 마진율 시뮬레이션\n- 물류창고 체화재고 중 이커머스 판매 전환 가능 품목 발굴 및 리스크 감소 방안 협의",
+          discussionPoints: "품목별 수익성 분석 및 출시 우선순위 결정\n- 장기재고 활용을 통한 재고 부담 완화와 판매 확대 전략",
+          risks: "체화재고 품목의 판매 가능성 및 이커머스 적합성 미확실성\n- 재고 리스크 관리 및 판매 전환 실패 시 비용 발생",
+        },
+        {
+          agenda: "법적 리스크 정비 및 인허가·라벨 수정",
+          relatedDept: "인사총무, 구매, 현업",
+          keyContent: "유통전문판매업 인허가 취득 일정 점검\n- PB상품 라벨 및 표시사항 수정 작업\n- 생산자배상책임보험 가입 조건 및 범위 검토",
+          discussionPoints: "인허가 지연 가능성 관리\n- 라벨 수정에 따른 법적 요건 충족과 소비자 안전 우선",
+          risks: "인허가 지연 시 마케팅 일정 및 판매 일정 차질\n- 보험 가입 범위 미흡 시 법적 분쟁 위험",
+        },
+        {
+          agenda: "마케팅·콘텐츠 역량 보완 및 상품 등록",
+          relatedDept: "마케팅, 디자인, 영업",
+          keyContent: "초기 브랜드 인지도 확보를 위한 검색 유입 및 리뷰 축적 방안\n- 상세 페이지 이미지 및 스토리텔링 콘텐츠 제작 인력 배정\n- 네이버 스마트스토어 상품정보 등록 프로세스 수립",
+          discussionPoints: "콘텐츠 제작과 등록 절차의 일정 조율\n- 구매 전환율을 높이기 위한 고객 관점 콘텐츠 기획",
+          risks: "부실한 콘텐츠 시 브랜드 인지도 저하 우려\n- 상품 등록 지연으로 인한 판매 기회 손실 가능성",
+        },
+        {
+          agenda: "라이브 오픈을 위한 운영 시스템 구축",
+          relatedDept: "정보전략, 재경",
+          keyContent: "사방넷(OMS) 도입 및 기존 물류 시스템 연동 협의\n- 네이버쇼핑 API 활용 가격 동향 및 손익분기점 분석 시스템 구축",
+          discussionPoints: "시스템 연동 실무 협력 및 데이터 정확성 확보\n- BEP 분석을 통한 가격정책 최적화",
+          risks: "시스템 연동 오류 및 안정성 문제\n- 데이터 미흡 시 가격 전략 실패 가능성",
+        },
+        {
+          agenda: "물류/CS 협력사 프로세스 조율",
+          relatedDept: "물류운영, 고객지원",
+          keyContent: "이천운영팀 택배사 '한박스더' 출고 마감 시간 및 요일 조율\n- CS 대행 협력사 'CS쉐어링' 이커머스 전용 고객 문의 매뉴얼 및 정산 프로세스 정립",
+          discussionPoints: "택배 출고 일정 조율 및 지연 최소화 방안\n- CS 대응 문의 표준화 및 업무 프로세스 명확화",
+          risks: "출고 지연에 따른 고객 불만 및 신뢰 하락 위험\n- CS 대응 미비에 따른 고객 이탈 가능성",
+        },
+      ],
+    },
     {
       from: "10:15", to: "10:40", dept: "운영담당", presenter: "한성갑 팀장", team: "김해운영2팀",
       topic: "스마일 주유소 김해점 매출확대 및 손익개선방안",
@@ -717,8 +758,8 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
     from: p.from, to: p.to, label: p.team, dept: p.dept || `발표 ${i + 1}`, presenter: p.presenter,
     topic: p.topic, summary: p.summary, presIdx: i,
     hasDetail: true,
-    script: (
-      <div className="space-y-1">
+      script: (
+        <div className="space-y-1">
         <p>○ {p.team === "정보전략팀"
           ? `${p.team} 발표드리겠습니다.`
           : `${p.team || p.dept || ""} 발표해 주시기 바랍니다.`}
@@ -742,10 +783,10 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                 </li>
               ))}
             </ul>
-          </div>
+        </div>
         )}
-      </div>
-    ),
+        </div>
+      ),
     notes: "",
   }));
 
@@ -813,7 +854,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
               style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)", boxShadow: "0 0 12px rgba(124,58,237,0.4)" }}>
               <span className="text-sm">📋</span>
             </div>
-            <div>
+          <div>
               <h1 className="text-[13px] font-bold tracking-tight text-white">업무혁신회의 — 진행자 멘트</h1>
               <p className="text-[11px] mt-0.5" style={{ color: "rgba(167,139,250,0.7)" }}>
                 <span className="bg-yellow-300 text-yellow-900 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1">노란색 항목</span>
@@ -949,22 +990,22 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                     : row.bg === "bg-gray-50" ? "#f9fafb"
                     : i % 2 === 0 ? "#ffffff" : "#f8f9fb";
                   return (
-                    <tr
-                      key={i}
+                  <tr
+                    key={i}
                       style={{ backgroundColor: rowBg }}
                       className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
-                    >
+                  >
                       {/* 시간 */}
                       <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[13px] text-gray-700 whitespace-nowrap align-middle"
                         style={isLast ? { fontWeight: 800 } : {}}>
                         <span style={isLast ? { textDecoration: "underline" } : {}}>
-                          {row.from}
+                      {row.from}
                         </span>
                         <span className="mx-1.5 text-gray-400 font-normal">-</span>
                         <span style={isLast ? { fontWeight: 800, textDecoration: "underline" } : {}}>
-                          {row.to}
+                      {row.to}
                         </span>
-                      </td>
+                    </td>
                       {/* 담당 */}
                       <td
                         className={`border border-gray-300 px-3 py-3 text-center text-[13px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
@@ -975,9 +1016,9 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                         {row.hasDetail && (
                           <span className="block text-[10px] text-indigo-400 font-normal mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                             세부보기 →
-                          </span>
+                      </span>
                         )}
-                      </td>
+                    </td>
                       {/* 팀/발표자 */}
                       <td
                         className={`border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 transition-colors" : ""}`}
@@ -987,12 +1028,12 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                         {row.presenter && row.presenter !== row.label && (
                           <div className="text-gray-500 text-[13px] mt-0.5">({row.presenter})</div>
                         )}
-                      </td>
+                    </td>
                       {/* 발표내용 + 진행자 멘트 */}
                       <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-800 align-top leading-relaxed">
-                        {row.script}
-                        <Notes text={row.notes} />
-                      </td>
+                      {row.script}
+                      <Notes text={row.notes} />
+                    </td>
                       {/* 회의내용 요약 */}
                       <td className="border border-gray-300 px-4 py-3 text-[13px] text-gray-700 align-top leading-relaxed">
                         {(row.presIdx !== undefined || row.onSummaryChange) ? (
@@ -1015,7 +1056,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
                           <span className="text-gray-300 text-xs italic">-</span>
                         )}
                       </td>
-                    </tr>
+                  </tr>
                   );
                 })}
               </tbody>
@@ -1210,7 +1251,7 @@ function DetailPage({
               className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-900 transition border border-emerald-200 hover:border-emerald-400 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100">
               ✓ 저장
             </button>
-          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -1230,7 +1271,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v5");
+      const saved = localStorage.getItem("meeting_data_v6");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1241,7 +1282,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v5", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v6", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
@@ -1337,8 +1378,8 @@ export default function App() {
                   <p className="text-[12px] font-semibold leading-tight">{item.label}</p>
                   <p className="text-[10px] leading-tight mt-0.5" style={{ color: page === item.id ? "rgba(167,139,250,0.7)" : "rgba(100,116,139,0.8)" }}>
                     {item.sub}
-                  </p>
-                </div>
+        </p>
+      </div>
               )}
               {page === item.id && sidebarOpen && (
                 <span className="ml-auto w-1 h-1 rounded-full bg-violet-400 flex-shrink-0" />
