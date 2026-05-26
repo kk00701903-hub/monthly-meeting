@@ -1449,13 +1449,13 @@ export default function App() {
       {/* ── 세부 토의 안건 모달 ── */}
       {detailModal !== null && data.presentations[detailModal] && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-2"
-          style={{ background: "rgba(0,0,0,0.65)" }}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: "rgba(0,0,0,0.75)" }}
           onClick={() => setDetailModal(null)}
         >
           <div
-            className="relative bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden"
-            style={{ width: "98vw", height: "96vh", maxWidth: "none" }}
+            className="relative bg-white flex flex-col overflow-hidden"
+            style={{ width: "100vw", height: "100vh", maxWidth: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
             <DetailPage
