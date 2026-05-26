@@ -757,9 +757,9 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
     },
     ...presRows,
     {
-      from: lastTo || "10:40", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
+      from: "10:40", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
       script: (
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <p>○ {scripts.closing}</p>
           <p className="font-semibold text-gray-700">○ {scripts.finalReport}</p>
         </div>
