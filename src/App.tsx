@@ -25,9 +25,13 @@ type MeetingData = {
   jegwa: SectionData;
 };
 
+const _now = new Date();
+const _month = String(_now.getMonth() + 1);
+const _year = String(_now.getFullYear());
+
 const DEFAULT_DATA: MeetingData = {
-  month: "9",
-  meetingDate: "2024년 9월",
+  month: _month,
+  meetingDate: `${_year}년 ${_month}월`,
   endTime: "11",
   videoTitle: "물류산업종사자만 78만명, 로봇은 정말 인간의 일자리를 뺏어갈까?",
   videoSelector: "인사총무팀",
