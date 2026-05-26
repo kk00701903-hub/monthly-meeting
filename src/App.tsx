@@ -678,7 +678,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
 /* ──────────────────────────────────────────
    멘트 시트 화면
 ─────────────────────────────────────────── */
-function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean; onOpenDetail: (idx: number) => void }) {
+function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean; onOpenModal: (idx: number) => void }) {
   const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, presentations } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
@@ -727,7 +727,22 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
           <p className="text-[13px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
         )}
         {(p.discussion?.length ?? 0) > 0 && (
-          <p className="text-[13px] text-violet-500 pl-3 mt-0.5">📋 토의 안건 {p.discussion.length}건</p>
+          <div className="pl-3 mt-1.5 space-y-1">
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpenModal(i); }}
+              className="text-[13px] text-violet-600 font-semibold hover:text-violet-800 hover:underline transition-colors"
+            >
+              📋 토의 안건 {p.discussion.length}건 →
+            </button>
+            <ul className="pl-1 space-y-0.5">
+              {p.discussion.map((d, di) => (
+                <li key={di} className="text-[11px] text-gray-500 flex items-start gap-1">
+                  <span className="text-gray-300 flex-shrink-0 mt-0.5">·</span>
+                  <span className="leading-snug">{d.agenda}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     ),
@@ -953,7 +968,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
                       {/* 담당 */}
                       <td
                         className={`border border-gray-300 px-3 py-3 text-center text-[13px] font-bold text-gray-700 align-middle whitespace-nowrap ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 hover:text-indigo-700 transition-colors group" : ""}`}
-                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenDetail(row.presIdx!) : undefined}
+                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenModal(row.presIdx!) : undefined}
                         title={row.hasDetail ? "클릭하여 세부 토의 안건 보기" : undefined}
                       >
                         {row.dept || row.label}
@@ -966,7 +981,7 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenDetail }: { data: Meet
                       {/* 팀/발표자 */}
                       <td
                         className={`border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug ${row.hasDetail ? "cursor-pointer hover:bg-indigo-50 transition-colors" : ""}`}
-                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenDetail(row.presIdx!) : undefined}
+                        onClick={row.hasDetail && row.presIdx !== undefined ? () => onOpenModal(row.presIdx!) : undefined}
                       >
                         <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
                         {row.presenter && row.presenter !== row.label && (
@@ -1205,11 +1220,11 @@ function DetailPage({
 /* ──────────────────────────────────────────
    메인 앱 (사이드바 + 라우팅)
 ─────────────────────────────────────────── */
-type Page = "script" | "master" | "ai" | "detail";
+type Page = "script" | "master" | "ai";
 
 export default function App() {
   const [page, setPage] = useState<Page>("script");
-  const [detailIdx, setDetailIdx] = useState<number>(0);
+  const [detailModal, setDetailModal] = useState<number | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   
   // localStorage에서 데이터 로드 또는 기본값 사용
@@ -1354,23 +1369,38 @@ export default function App() {
         <AiExtractPage onApply={(partial) => setData((prev) => ({ ...prev, ...partial }))} />
       ) : page === "master" ? (
         <MasterPage data={data} onChange={setData} />
-      ) : page === "detail" ? (
-        <DetailPage
-          pres={data.presentations[detailIdx]}
-          onBack={() => setPage("script")}
-          onUpdate={(items) => {
-            const updated = [...data.presentations];
-            updated[detailIdx] = { ...updated[detailIdx], discussion: items };
-            setData({ ...data, presentations: updated });
-          }}
-        />
       ) : (
         <ScriptPage
           data={data}
           onDataChange={setData}
           isOnline={isOnline}
-          onOpenDetail={(idx) => { setDetailIdx(idx); setPage("detail"); }}
+          onOpenModal={(idx) => setDetailModal(idx)}
         />
+      )}
+
+      {/* ── 세부 토의 안건 모달 ── */}
+      {detailModal !== null && data.presentations[detailModal] && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.55)" }}
+          onClick={() => setDetailModal(null)}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col overflow-hidden"
+            style={{ maxHeight: "90vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <DetailPage
+              pres={data.presentations[detailModal]}
+              onBack={() => setDetailModal(null)}
+              onUpdate={(items) => {
+                const updated = [...data.presentations];
+                updated[detailModal] = { ...updated[detailModal], discussion: items };
+                setData({ ...data, presentations: updated });
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
