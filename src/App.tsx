@@ -108,16 +108,12 @@ function Field({ label, value, onChange, wide }: { label: string; value: string;
    AI 추출 타입
 ─────────────────────────────────────────── */
 type AiPresentation = { from: string; to: string; presenter: string; team: string; topic: string };
-type AiExtracted = { month?: string; meetingDate?: string; endTime?: string; videoTitle?: string; videoSelector?: string; presentations: AiPresentation[] };
+type AiExtracted = { month?: string; meetingDate?: string; endTime?: string; videoTitle?: string; videoSelector?: string; videoReason?: string; presentations: AiPresentation[] };
 
 /* ──────────────────────────────────────────
-   마스터 화면
+   AI 추출 페이지
 ─────────────────────────────────────────── */
-function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: MeetingData) => void }) {
-  const [local, setLocal] = useState<MeetingData>(data);
-  const [saved, setSaved] = useState(false);
-
-  /* AI 상태 */
+function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => void }) {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("claude_api_key") || "");
   const [apiKeyVisible, setApiKeyVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
@@ -125,18 +121,6 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
   const [aiResult, setAiResult] = useState<AiExtracted | null>(null);
-
-  const set = (key: keyof MeetingData, val: string) =>
-    setLocal((p) => ({ ...p, [key]: val }));
-
-  const setSection = (key: keyof MeetingData, field: keyof SectionData, val: string) =>
-    setLocal((p) => ({ ...p, [key]: { ...(p[key] as SectionData), [field]: val } }));
-
-  const handleSave = () => {
-    onChange(local);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
 
   const handleApiKeySave = () => {
     localStorage.setItem("claude_api_key", apiKey);
@@ -169,6 +153,7 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
   "endTime": "회의 종료 시간 숫자만 (예: 11, 모르면 빈 문자열)",
   "videoTitle": "동영상 제목 (있으면, 없으면 빈 문자열)",
   "videoSelector": "동영상 선정 팀명 (있으면, 없으면 빈 문자열)",
+  "videoReason": "동영상 선정 사유 (있으면, 없으면 빈 문자열)",
   "presentations": [
     {
       "from": "시작시간 (예: 9:25)",
@@ -220,26 +205,189 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
     }
   };
 
-  const handleApply = () => {
+  const handleApplyClick = () => {
     if (!aiResult) return;
-    const slotKeys: (keyof MeetingData)[] = ["yeongUp", "gyeongIn1", "gyeongIn2", "yeongNam", "jungNam", "jegwa"];
-    const updated = { ...local };
+    const slotKeys: string[] = ["yeongUp", "gyeongIn1", "gyeongIn2", "yeongNam", "jungNam", "jegwa"];
+    const updated: Partial<MeetingData> = {};
     if (aiResult.month) updated.month = aiResult.month;
     if (aiResult.meetingDate) updated.meetingDate = aiResult.meetingDate;
     if (aiResult.endTime) updated.endTime = aiResult.endTime;
     if (aiResult.videoTitle) updated.videoTitle = aiResult.videoTitle;
     if (aiResult.videoSelector) updated.videoSelector = aiResult.videoSelector;
+    if (aiResult.videoReason) updated.videoReason = aiResult.videoReason;
     (aiResult.presentations || []).forEach((p, i) => {
       if (i < slotKeys.length) {
-        (updated as Record<string, unknown>)[slotKeys[i] as string] = {
+        (updated as Record<string, unknown>)[slotKeys[i]] = {
           from: p.from || "", to: p.to || "",
           presenter: p.presenter || "", team: p.team || "", topic: p.topic || "",
         };
       }
     });
-    setLocal(updated);
+    onApply(updated);
     setAiResult(null);
     setImagePreview("");
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto bg-slate-50">
+      <div className="bg-white border-b border-gray-200 px-8 py-5 sticky top-0 z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: "linear-gradient(135deg, #7c3aed, #4f46e5)", boxShadow: "0 0 16px rgba(124,58,237,0.4)" }}>
+            <span className="text-xl">✨</span>
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">AI 일정 자동 추출</h2>
+            <p className="text-xs text-gray-400 mt-0.5">회의 시간표 이미지를 업로드하면 Claude AI가 자동으로 일정을 인식합니다</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-8 py-6 max-w-3xl mx-auto space-y-6">
+        {/* API Key */}
+        <section className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-gradient-to-r from-violet-50 to-indigo-50 border-b border-gray-200 px-6 py-3">
+            <h3 className="font-semibold text-gray-800 text-sm">🔑 Claude API Key 설정</h3>
+          </div>
+          <div className="p-6 space-y-3">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <input
+                  type={apiKeyVisible ? "text" : "password"}
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="sk-ant-..."
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-violet-400 pr-10"
+                />
+                <button
+                  onClick={() => setApiKeyVisible(p => !p)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                >
+                  {apiKeyVisible ? "숨김" : "보기"}
+                </button>
+              </div>
+              <button
+                onClick={handleApiKeySave}
+                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition"
+              >
+                저장
+              </button>
+            </div>
+            <p className="text-[11px] text-gray-400">
+              🔒 API Key는 이 브라우저에만 저장됩니다.{" "}
+              <a href="https://console.anthropic.com/" target="_blank" rel="noreferrer" className="text-violet-500 underline">
+                Anthropic Console
+              </a>에서 발급받으세요.
+            </p>
+          </div>
+        </section>
+
+        {/* 이미지 업로드 */}
+        <section className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-gradient-to-r from-sky-50 to-cyan-50 border-b border-gray-200 px-6 py-3">
+            <h3 className="font-semibold text-gray-800 text-sm">📷 회의 시간표 이미지 업로드</h3>
+          </div>
+          <div className="p-6">
+            <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-colors ${imagePreview ? "border-violet-300 bg-violet-50" : "border-gray-200 bg-gray-50 hover:border-violet-300 hover:bg-violet-50"}`}>
+              {imagePreview ? (
+                <div className="w-full p-4">
+                  <img src={imagePreview} alt="업로드된 이미지" className="max-h-64 mx-auto rounded-lg object-contain shadow-sm" />
+                  <p className="text-center text-xs text-violet-600 mt-3 font-medium">클릭하여 이미지 변경</p>
+                </div>
+              ) : (
+                <div className="py-12 text-center px-4">
+                  <p className="text-4xl mb-2">📷</p>
+                  <p className="text-sm text-gray-500 font-medium">이미지를 클릭하여 업로드</p>
+                  <p className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP 지원</p>
+                </div>
+              )}
+              <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+            </label>
+          </div>
+        </section>
+
+        {/* 추출 버튼 */}
+        <button
+          onClick={handleExtract}
+          disabled={!apiKey || !imagePreview || aiLoading}
+          className="w-full py-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg"
+        >
+          {aiLoading ? (
+            <>
+              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+              AI 분석 중...
+            </>
+          ) : "✨ AI로 일정 추출하기"}
+        </button>
+
+        {/* 오류 */}
+        {aiError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 flex items-start gap-2">
+            <span className="flex-shrink-0 mt-0.5">⚠️</span>
+            <span>{aiError}</span>
+          </div>
+        )}
+
+        {/* 추출 결과 */}
+        {aiResult && (
+          <section className="bg-emerald-50 border-2 border-emerald-200 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 bg-emerald-100 border-b border-emerald-200 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">✅</span>
+                <span className="text-sm font-semibold text-emerald-800">추출 완료 — 발표 {aiResult.presentations?.length ?? 0}건</span>
+              </div>
+              <button onClick={() => setAiResult(null)} className="text-emerald-500 hover:text-emerald-700 text-xs font-medium">취소</button>
+            </div>
+            <div className="p-6 space-y-3">
+              {aiResult.month && <p className="text-xs text-gray-600">📅 <span className="font-medium">{aiResult.month}월</span> {aiResult.meetingDate && `· ${aiResult.meetingDate}`}</p>}
+              {aiResult.videoTitle && <p className="text-xs text-gray-600">🎬 {aiResult.videoTitle}</p>}
+              <div className="mt-3 space-y-2">
+                {(aiResult.presentations || []).map((p, i) => (
+                  <div key={i} className="bg-white rounded-lg border border-emerald-100 px-4 py-3 text-xs">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-mono text-gray-500 text-[11px]">{p.from} – {p.to}</span>
+                      <span className="text-gray-300">|</span>
+                      {p.team && <span className="text-gray-600 font-medium">{p.team}</span>}
+                      {p.presenter && <span className="text-gray-400"> ({p.presenter})</span>}
+                    </div>
+                    {p.topic && <p className="text-indigo-700 font-medium">{p.topic}</p>}
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={handleApplyClick}
+                className="w-full mt-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition"
+              >
+                회의 설정에 적용하기 →
+              </button>
+            </div>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────
+   마스터 화면
+─────────────────────────────────────────── */
+function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: MeetingData) => void }) {
+  const [local, setLocal] = useState<MeetingData>(data);
+  const [saved, setSaved] = useState(false);
+
+  const set = (key: keyof MeetingData, val: string) =>
+    setLocal((p) => ({ ...p, [key]: val }));
+
+  const setSection = (key: keyof MeetingData, field: keyof SectionData, val: string) =>
+    setLocal((p) => ({ ...p, [key]: { ...(p[key] as SectionData), [field]: val } }));
+
+  const handleSave = () => {
+    onChange(local);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   const sections: { key: keyof MeetingData; label: string; color: string }[] = [
@@ -790,7 +938,7 @@ function ScriptPage({ data, onDataChange }: { data: MeetingData; onDataChange: (
 /* ──────────────────────────────────────────
    메인 앱 (사이드바 + 라우팅)
 ─────────────────────────────────────────── */
-type Page = "script" | "master";
+type Page = "script" | "master" | "ai";
 
 export default function App() {
   const [page, setPage] = useState<Page>("script");
@@ -798,6 +946,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const navItems: { id: Page; icon: string; label: string; sub: string }[] = [
+    { id: "ai", icon: "✨", label: "AI 일정 추출", sub: "이미지에서 자동 인식" },
     { id: "master", icon: "⚙️", label: "회의 설정", sub: "발표자 · 시간 · 주제" },
     { id: "script", icon: "📋", label: "진행자 멘트 시트", sub: "회의 진행 스크립트" },
   ];
@@ -891,7 +1040,9 @@ export default function App() {
       </aside>
 
       {/* ── 콘텐츠 영역 ── */}
-      {page === "master" ? (
+      {page === "ai" ? (
+        <AiExtractPage onApply={(partial) => setData((prev) => ({ ...prev, ...partial }))} />
+      ) : page === "master" ? (
         <MasterPage data={data} onChange={setData} />
       ) : (
         <ScriptPage data={data} onDataChange={setData} />
