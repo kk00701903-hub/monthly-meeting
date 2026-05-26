@@ -1070,7 +1070,7 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                       className={`transition-all ${!isLast ? "hover:brightness-97" : ""}`}
                     >
                       {/* 시간 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center font-semibold text-[13px] text-gray-700 whitespace-nowrap align-middle"
+                      <td className="border border-gray-300 px-3 py-3 text-center font-bold text-[15px] text-gray-800 whitespace-nowrap align-middle"
                         style={isLast ? { fontWeight: 700 } : {}}>
                         <span style={isLast ? { textDecoration: "underline", textDecorationStyle: "solid" } : {}}>
                           {row.from}
@@ -1081,14 +1081,14 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                         </span>
                       </td>
                       {/* 담당 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center text-[12px] font-semibold text-gray-700 align-middle whitespace-nowrap">
+                      <td className="border border-gray-300 px-3 py-3 text-center text-[14px] font-bold text-gray-800 align-middle whitespace-nowrap">
                         {row.dept || row.label}
                       </td>
                       {/* 팀/발표자 */}
-                      <td className="border border-gray-300 px-3 py-3 text-center text-[11px] text-gray-600 align-middle leading-snug">
+                      <td className="border border-gray-300 px-3 py-3 text-center text-[13px] text-gray-600 align-middle leading-snug">
                         <div className="font-semibold text-gray-800">{row.label !== row.dept ? row.label : ""}</div>
                         {row.presenter && row.presenter !== row.label && (
-                          <div className="text-gray-500 text-[10px] mt-0.5">({row.presenter})</div>
+                          <div className="text-gray-500 text-[11px] mt-0.5">({row.presenter})</div>
                         )}
                       </td>
                       {/* 발표내용 + 진행자 멘트 */}
