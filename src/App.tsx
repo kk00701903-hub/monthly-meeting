@@ -30,12 +30,7 @@ type MeetingData = {
   videoSelector: string;
   videoReason: string;
   scripts: ScriptTexts;
-  yeongUp: SectionData;
-  gyeongIn1: SectionData;
-  gyeongIn2: SectionData;
-  yeongNam: SectionData;
-  jungNam: SectionData;
-  jegwa: SectionData;
+  presentations: SectionData[];
 };
 
 const _now = new Date();
@@ -58,12 +53,7 @@ const DEFAULT_DATA: MeetingData = {
     finalReport: "대표님, 금일 발표는 다 끝났습니다.",
     ending: "이상으로 월 업무혁신회의를 마치겠습니다.",
   },
-  yeongUp: { from: "9:15", to: "9:30", presenter: "최배성본부장", team: "영업지원팀", topic: "3PL 표준요율 단가정립을 통한 견적업무 합리화", summary: "" },
-  gyeongIn1: { from: "9:30", to: "9:45", presenter: "마영기상무", team: "유통사업3팀", topic: "입고 명세서 통일화 테스트 상황 및 향후 과제", summary: "" },
-  gyeongIn2: { from: "9:45", to: "10:00", presenter: "안영준본부장", team: "경인사업2팀", topic: "AI 활용사례 : 전표처리 자동화", summary: "" },
-  yeongNam: { from: "10:00", to: "10:15", presenter: "김태성본부장", team: "영남사업1팀", topic: "3PL 크레이트 세척 개선방안 검토", summary: "" },
-  jungNam: { from: "10:15", to: "10:30", presenter: "하선호본부장", team: "중남사업1팀", topic: "유음료 배송노선 조정 검토", summary: "" },
-  jegwa: { from: "10:30", to: "10:40", presenter: "표정우본부장", team: "제과사업2팀", topic: "자동화설비 도입을 통한 원가절감 방안", summary: "" },
+  presentations: [],
 };
 
 /* ──────────────────────────────────────────
@@ -228,7 +218,6 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
 
   const handleApplyClick = () => {
     if (!aiResult) return;
-    const slotKeys: string[] = ["yeongUp", "gyeongIn1", "gyeongIn2", "yeongNam", "jungNam", "jegwa"];
     const updated: Partial<MeetingData> = {};
     if (aiResult.month) updated.month = aiResult.month;
     if (aiResult.meetingDate) updated.meetingDate = aiResult.meetingDate;
@@ -236,14 +225,11 @@ function AiExtractPage({ onApply }: { onApply: (data: Partial<MeetingData>) => v
     if (aiResult.videoTitle) updated.videoTitle = aiResult.videoTitle;
     if (aiResult.videoSelector) updated.videoSelector = aiResult.videoSelector;
     if (aiResult.videoReason) updated.videoReason = aiResult.videoReason;
-    (aiResult.presentations || []).forEach((p, i) => {
-      if (i < slotKeys.length) {
-        (updated as Record<string, unknown>)[slotKeys[i]] = {
-          from: p.from || "", to: p.to || "",
-          presenter: p.presenter || "", team: p.team || "", topic: p.topic || "",
-        };
-      }
-    });
+    updated.presentations = (aiResult.presentations || []).map((p) => ({
+      from: p.from || "", to: p.to || "",
+      presenter: p.presenter || "", team: p.team || "",
+      topic: p.topic || "", summary: "",
+    }));
     onApply(updated);
     setAiResult(null);
     setImagePreview("");
@@ -402,23 +388,27 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
   const set = (key: keyof MeetingData, val: string) =>
     setLocal((p) => ({ ...p, [key]: val }));
 
-  const setSection = (key: keyof MeetingData, field: keyof SectionData, val: string) =>
-    setLocal((p) => ({ ...p, [key]: { ...(p[key] as SectionData), [field]: val } }));
+  const setPres = (i: number, field: keyof SectionData, val: string) =>
+    setLocal((p) => {
+      const arr = [...p.presentations];
+      arr[i] = { ...arr[i], [field]: val };
+      return { ...p, presentations: arr };
+    });
+
+  const addRow = () =>
+    setLocal((p) => ({
+      ...p,
+      presentations: [...p.presentations, { from: "", to: "", presenter: "", team: "", topic: "", summary: "" }],
+    }));
+
+  const removeRow = (i: number) =>
+    setLocal((p) => ({ ...p, presentations: p.presentations.filter((_, idx) => idx !== i) }));
 
   const handleSave = () => {
     onChange(local);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
-
-  const sections: { key: keyof MeetingData; label: string; color: string }[] = [
-    { key: "yeongUp", label: "발표 1", color: "bg-violet-50 border-violet-200" },
-    { key: "gyeongIn1", label: "발표 2", color: "bg-sky-50 border-sky-200" },
-    { key: "gyeongIn2", label: "발표 3", color: "bg-sky-50 border-sky-200" },
-    { key: "yeongNam", label: "발표 4", color: "bg-emerald-50 border-emerald-200" },
-    { key: "jungNam", label: "발표 5", color: "bg-amber-50 border-amber-200" },
-    { key: "jegwa", label: "발표 6", color: "bg-rose-50 border-rose-200" },
-  ];
 
   return (
     <div className="flex-1 overflow-y-auto bg-slate-50">
@@ -709,80 +699,55 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
             <span className="text-indigo-200 text-base">🏢</span>
             <h3 className="font-semibold text-white text-sm">본부별 발표 일정</h3>
           </div>
-          <div className="p-6 overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-50">
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-20">구분</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">시작시간</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">종료시간</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">발표자</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-32">소속팀</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표주제</th>
-                  <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">회의내용요약</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sections.map(({ key, label }) => {
-                  const s = local[key] as SectionData;
-                  return (
-                    <tr key={key} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-3 py-2 text-center">
-                        <span className="text-xs font-medium text-gray-700">{label}</span>
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.from}
-                          onChange={(e) => setSection(key, "from", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.to}
-                          onChange={(e) => setSection(key, "to", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.presenter}
-                          onChange={(e) => setSection(key, "presenter", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.team}
-                          onChange={(e) => setSection(key, "team", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.topic}
-                          onChange={(e) => setSection(key, "topic", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
-                      </td>
-                      <td className="border border-gray-200 px-2 py-2">
-                        <input
-                          type="text"
-                          value={s.summary}
-                          onChange={(e) => setSection(key, "summary", e.target.value)}
-                          className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                        />
+          <div className="p-6 space-y-3 overflow-x-auto">
+            {local.presentations.length === 0 ? (
+              <div className="text-center py-8 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-xl">
+                <p className="text-2xl mb-2">📋</p>
+                <p>AI 일정 추출 또는 + 버튼으로 발표 일정을 추가하세요</p>
+              </div>
+            ) : (
+              <table className="w-full border-collapse border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-8">#</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">시작</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-24">종료</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-28">발표자</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-center w-32">소속팀</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">발표주제</th>
+                    <th className="border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 text-left">회의내용요약</th>
+                    <th className="border border-gray-200 px-2 py-2 w-8"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {local.presentations.map((s, i) => (
+                    <tr key={i} className="hover:bg-indigo-50/30">
+                      <td className="border border-gray-200 px-2 py-2 text-center text-xs text-gray-400 font-mono">{i + 1}</td>
+                      {(["from", "to"] as (keyof SectionData)[]).map((f) => (
+                        <td key={f} className="border border-gray-200 px-2 py-2">
+                          <input type="text" value={s[f]} onChange={(e) => setPres(i, f, e.target.value)}
+                            className="w-full border border-gray-200 rounded px-2 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-indigo-400" />
+                        </td>
+                      ))}
+                      {(["presenter", "team", "topic", "summary"] as (keyof SectionData)[]).map((f) => (
+                        <td key={f} className="border border-gray-200 px-2 py-2">
+                          <input type="text" value={s[f]} onChange={(e) => setPres(i, f, e.target.value)}
+                            className="w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-400" />
+                        </td>
+                      ))}
+                      <td className="border border-gray-200 px-2 py-2 text-center">
+                        <button onClick={() => removeRow(i)}
+                          className="text-red-400 hover:text-red-600 text-xs font-bold transition">✕</button>
                       </td>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            <button onClick={addRow}
+              className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition border border-indigo-200 hover:border-indigo-400 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100">
+              + 행 추가
+            </button>
           </div>
         </section>
       </div>
@@ -794,11 +759,19 @@ function MasterPage({ data, onChange }: { data: MeetingData; onChange: (d: Meeti
    멘트 시트 화면
 ─────────────────────────────────────────── */
 function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDataChange: (d: MeetingData) => void; isOnline: boolean }) {
-  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, yeongUp, gyeongIn1, gyeongIn2, yeongNam, jungNam, jegwa } = data;
+  const { month, meetingDate, endTime, videoTitle, videoSelector, videoReason, scripts, presentations } = data;
 
   const set = (key: keyof MeetingData) => (v: string) => onDataChange({ ...data, [key]: v });
-  const setSection = (key: keyof MeetingData, field: keyof SectionData) => (v: string) =>
-    onDataChange({ ...data, [key]: { ...(data[key] as SectionData), [field]: v } });
+  const setPresTopic = (i: number) => (v: string) => {
+    const arr = [...presentations];
+    arr[i] = { ...arr[i], topic: v };
+    onDataChange({ ...data, presentations: arr });
+  };
+  const setPresSummary = (i: number) => (v: string) => {
+    const arr = [...presentations];
+    arr[i] = { ...arr[i], summary: v };
+    onDataChange({ ...data, presentations: arr });
+  };
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -818,7 +791,23 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
     return () => { document.getElementById("print-style")?.remove(); };
   }, []);
 
-  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; script: React.ReactNode; notes: string; bg?: string };
+  type RowItem = { from: string; to: string; label: string; dept?: string; presenter: string; topic?: string; summary?: string; presIdx?: number; script: React.ReactNode; notes: string; bg?: string };
+
+  const lastTo = presentations.length > 0 ? presentations[presentations.length - 1].to : "";
+
+  const presRows: RowItem[] = presentations.map((p, i) => ({
+    from: p.from, to: p.to, label: p.team, dept: `발표 ${i + 1}`, presenter: p.presenter,
+    topic: p.topic, summary: p.summary, presIdx: i,
+    script: (
+      <div className="space-y-1">
+        <p>○ {p.team ? `${p.team} ` : ""}발표해 주시기 바랍니다.</p>
+        {p.topic && (
+          <p className="text-[11px] text-blue-600 pl-3">→ <E value={p.topic} onChange={setPresTopic(i)} w="220px" /></p>
+        )}
+      </div>
+    ),
+    notes: "",
+  }));
 
   const rows: RowItem[] = [
     {
@@ -837,85 +826,26 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
           </p>
         </div>
       ),
-      notes: "○ 결론을 낸다.\n○ 내용이 길고 복잡할 경우, 발표한 내용을 반복해서 요약 정리해준다.\n○ 각 부서별 의견을 묻는다.\n○ 팀별 질문에 대한 대답 요청",
+      notes: "",
     },
     {
       from: "9:08", to: "9:15", label: "기획담당", dept: "기획담당", presenter: "경영기획팀",
       script: <p>○ {scripts.planningTeam.replace("월", `${month}월`)}</p>,
       notes: "",
     },
+    ...presRows,
     {
-      from: yeongUp.from, to: yeongUp.to, label: yeongUp.team, dept: "발표 1", presenter: `${yeongUp.presenter}`, topic: yeongUp.topic, summary: yeongUp.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 영업본부 주요 개선사항 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={yeongUp.topic} onChange={setSection("yeongUp", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "○ 당사 일마감 프로젝트 수행 시 매출정산 유형이 30가지, 세분화하면 80가지 이상이어서 어려움이 있음. 전사 투명하고 표준화된 관리를 위한 PI 시도로 판단됨.\n○ 현재 많은 회사들이 영업효율화 및 전략수립을 위해 견적자동화 솔루션을 도입하고 있음(부릉-한국야쿠르트 등). 데이터기반 견적생성, 견적템플릿 관리, 실시간 단가 업데이트, 승인워크플로우 자동화 등.",
-    },
-    {
-      from: gyeongIn1.from, to: gyeongIn1.to, label: gyeongIn1.team, dept: "발표 2", presenter: `${gyeongIn1.presenter}`, topic: gyeongIn1.topic, summary: gyeongIn1.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 이어서 경인사업1본부 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={gyeongIn1.topic} onChange={setSection("gyeongIn1", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "○ 사내 AI 교육 6/12일, 사내 지식경영을 통해 교육 게시물 업데이트 중.\n○ 7/22 영업본부 워크샵 시 영업부문 경진대회, 올해 하반기 전사 경진대회 검토.\n→ 사내 AI 활용 수준이 높고 상당히 고무적임.\n○ 회사 볼륨이 커질수록 IT 요구사항 증가. AI를 통해 충분히 사용성을 검토 후 개발요청 시 업무효율 증가 예상.",
-    },
-    {
-      from: gyeongIn2.from, to: gyeongIn2.to, label: gyeongIn2.team, dept: "발표 3", presenter: `${gyeongIn2.presenter}`, topic: gyeongIn2.topic, summary: gyeongIn2.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 경인사업2본부 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={gyeongIn2.topic} onChange={setSection("gyeongIn2", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "○ AI 활용을 위한 좋은 시도로 생각됨.\n○ 기업의 AI 활용에 대한 보안/윤리적 제한에 대해서도 고민 필요.\n○ 전표 등 민감정보에 대해서는 유관부서와 사전 공유 및 IT 부서의 가이드라인을 따르는 것이 중요할 것으로 판단됨.",
-    },
-    {
-      from: yeongNam.from, to: yeongNam.to, label: yeongNam.team, dept: "발표 4", presenter: `${yeongNam.presenter}`, topic: yeongNam.topic, summary: yeongNam.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 영남사업본부 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={yeongNam.topic} onChange={setSection("yeongNam", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "",
-    },
-    {
-      from: jungNam.from, to: jungNam.to, label: jungNam.team, dept: "발표 5", presenter: `${jungNam.presenter}`, topic: jungNam.topic, summary: jungNam.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 중남사업본부 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={jungNam.topic} onChange={setSection("jungNam", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "○ 중남사업부는 차량당 배송 커버지역이 넓어 운행거리가 많음. 배송 거래처 증가 시 노선 수 조정 관련 배송기사 반발 여부 확인 필요.\n○ 대리점 도착시간에 문제가 없는지?",
-    },
-    {
-      from: jegwa.from, to: jegwa.to, label: jegwa.team, dept: "발표 6", presenter: `${jegwa.presenter}`, topic: jegwa.topic, summary: jegwa.summary,
-      script: (
-        <div className="space-y-1">
-          <p>○ 제과사업부 발표해 주시기 바랍니다.</p>
-          <p className="text-[11px] text-blue-600 pl-3">→ <E value={jegwa.topic} onChange={setSection("jegwa", "topic")} w="220px" /></p>
-        </div>
-      ),
-      notes: "",
-    },
-    {
-      from: "10:40", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
+      from: lastTo, to: "", label: "전체", dept: "전체", presenter: "회의진행", bg: "bg-gray-50",
       script: <p>○ {scripts.closing}</p>,
       notes: "",
     },
     {
-      from: "10:50", to: "10:50", label: "전체", dept: "전체", presenter: "회의진행",
+      from: "", to: "", label: "전체", dept: "전체", presenter: "회의진행",
       script: <p className="font-semibold text-gray-700">○ {scripts.finalReport}</p>,
       notes: "",
     },
     {
-      from: "10:50", to: "11:00", label: "전체", dept: "전체", presenter: "사장님", bg: "bg-blue-50",
+      from: "", to: `${endTime}:00`, label: "전체", dept: "전체", presenter: "사장님", bg: "bg-blue-50",
       script: (
         <p>
           ○ 대표님 맺음말{" "}
@@ -1098,10 +1028,20 @@ function ScriptPage({ data, onDataChange, isOnline }: { data: MeetingData; onDat
                       </td>
                       {/* 회의내용 요약 */}
                       <td className="border border-gray-300 px-4 py-3 text-[12px] text-gray-700 align-top leading-relaxed">
-                        {row.summary ? (
+                        {row.presIdx !== undefined ? (
+                          <span
+                            contentEditable
+                            suppressContentEditableWarning
+                            onBlur={(e) => setPresSummary(row.presIdx!)(e.currentTarget.textContent ?? "")}
+                            className="block w-full min-h-[40px] whitespace-pre-wrap focus:outline-none focus:ring-1 focus:ring-indigo-300 rounded px-1"
+                            title="클릭하여 요약 입력"
+                          >
+                            {row.summary || ""}
+                          </span>
+                        ) : row.summary ? (
                           <div className="whitespace-pre-wrap">{row.summary}</div>
                         ) : (
-                          <span className="text-gray-300 text-xs italic">요약 없음</span>
+                          <span className="text-gray-300 text-xs italic">-</span>
                         )}
                       </td>
                     </tr>
