@@ -60,7 +60,7 @@ const DEFAULT_DATA: MeetingData = {
   videoPresentDept: "영업본부",
   videoSummary: "강연자: 황성현 ㈜권팀인사이트(경영컨설팅 전문회사) 대표\n- 고성과 조직은 \"실패하더라도 불이익을 받지 않는다\"는 \"심리적 안정감\"을 구축하고 있음\n- 미래 사회와 인공지능 시대의 조직은 정답을 맞추는 것보다 다양한 해답을 찾는 힘이 필요하며, 실패를 담당히 공유하는 시스템을 구축해야함\n- 과거의 성공방식에 매몰되지 않고, 새로운 세대가 도전을 하도록 리더와 경영진이 심리적 공간을 마련해주는 것이 핵심임",
   scripts: {
-    opening: "월 업무혁신회의를 시작하겠습니다.",
+    opening: "업무혁신회의를 시작하겠습니다.",
     videoIntro: "다음으로 동영상 시청이 있겠습니다. 금일 동영상은",
     videoReason: "이번 동영상은",
     planningTeam: "경영기획팀에서 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.",
@@ -823,8 +823,8 @@ function ScriptPage({ data, onDataChange, isOnline, onOpenModal }: { data: Meeti
       onSummaryChange: (v) => onDataChange({ ...data, videoSummary: v }),
       script: (
         <div className="space-y-1.5">
-          <p>○ <E value={month} onChange={set("month")} w="28px" />월 {scripts.opening}{" "}
-            <span className="text-gray-400 italic">[상호 인사]</span></p>
+          <p>○ <E value={month} onChange={set("month")} w="28px" />월 업무혁신회의를 시작하겠습니다.{" "}
+            <span className="text-gray-400 italic">상호간에 인사</span></p>
           <p className="text-gray-500">(시간표) 금일 회의는 동영상 시청 및 각 본부별 업무개선사항 발표 후{" "}
             <E value={endTime} onChange={set("endTime")} w="24px" />시에 종료하도록 하겠습니다.</p>
           <p>○ {scripts.videoIntro} 「<E value={videoTitle} onChange={set("videoTitle")} w="220px" />」입니다.</p>
@@ -1299,7 +1299,7 @@ export default function App() {
   // localStorage에서 데이터 로드 또는 기본값 사용
   const [data, setData] = useState<MeetingData>(() => {
     try {
-      const saved = localStorage.getItem("meeting_data_v7");
+      const saved = localStorage.getItem("meeting_data_v8");
       return saved ? JSON.parse(saved) : DEFAULT_DATA;
     } catch {
       return DEFAULT_DATA;
@@ -1310,7 +1310,7 @@ export default function App() {
 
   // 데이터 변경 시 자동 저장
   useEffect(() => {
-    localStorage.setItem("meeting_data_v7", JSON.stringify(data));
+    localStorage.setItem("meeting_data_v8", JSON.stringify(data));
   }, [data]);
 
   // 온라인/오프라인 상태 감지
