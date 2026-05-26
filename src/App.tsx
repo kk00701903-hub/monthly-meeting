@@ -63,7 +63,7 @@ const DEFAULT_DATA: MeetingData = {
     opening: "업무혁신회의를 시작하겠습니다.",
     videoIntro: "다음으로 동영상 시청이 있겠습니다. 금일 동영상은",
     videoReason: "이번 동영상은",
-    planningTeam: "경영기획팀에서 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.",
+    planningTeam: "경영기획팀에서는 월 경영전략회의 지시사항 팔로우업 해주시기 바랍니다.",
     closing: "각 팀별로 전달사항이나 특이사항 있으시면 공유해 주시기 바랍니다.",
     finalReport: "대표님, 금일 발표는 다 끝났습니다.",
     ending: "이상으로",
